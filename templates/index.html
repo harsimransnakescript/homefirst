@@ -89,7 +89,7 @@
           "csrfmiddlewaretoken": '{{ csrf_token }}'
         },
         success: function (data) {
-          console.log(data)
+          console.log(data,"------->")
           $("#display div").last().html(data['fetch'])
           input.value = "";
           $("#browsers").remove();
@@ -185,6 +185,47 @@
       location.reload()
     })
   });
+</script>
+<script>
+    const endpointUrl = 'http://127.0.0.1:8000/index';
+    const payload = {}; 
+
+    async function fetchData() {
+        try {
+            const response = await fetch(endpointUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const reader = response.body.getReader();
+            await readStream(reader);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function readStream(reader) {
+        while (true) {
+            const { done, value } = await reader.read();
+
+            if (done) {
+                console.log('Stream ended');
+                break;
+            }
+
+            const string = new TextDecoder().decode(value);
+            console.log(string);
+        }
+    }
+
+    fetchData();
 </script>
 </body>
 </html>

@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, StreamingHttpResponse
 import openai
 from chatbot.models import Patient_Query,Products
 from django.conf import settings
-
+import json
 def open_file(filepath):
     with open(filepath,'r',encoding='utf-8') as infile:
         return infile.read()
@@ -19,10 +19,20 @@ def gpt3(text,request):
         max_tokens=1000, # One token is roughly 4 characters of english
         top_p=0, # controls diversity
         frequency_penalty=0, # decreases the models likelihood to repeat same answers.
-        presence_penalty=0 # increases the models likelihood to talk about new topics
+        presence_penalty=0,# increases the models likelihood to talk about new topics
+        stream=True
     )
     # content = response.choices[0].text.split('.')
-    return response.choices[0].text#to get the results from the open ai
+    # return response.choices[0].text#to get the results from the open ai
+    test = []
+    def generate_response():
+        for chunk in response:
+            chunk_message = chunk['choices'][0]['delta']
+            test.append(chunk_message.get("content", ''))
+            yield chunk_message.get({"content", ''})
+
+        # use Django's StreamingHttpResponse to send the response messages as a stream to the frontend
+    return StreamingHttpResponse(generate_response(), headers={'X-Accel-Buffering': 'no'})
 
 
 def index(request):
@@ -68,7 +78,8 @@ def index(request):
         prompt = prompt + '\nGuide:'
     
         try:
-            result=gpt3(prompt, request).lstrip()
+            result=gpt3(prompt, request)
+            print("result",result)
         except openai.error.RateLimitError:
             result = "[ INFO ] The server is currently overloaded with other requests. Sorry about that! You can retry your request."
         except openai.error.ServiceUnavailableError:
@@ -76,6 +87,7 @@ def index(request):
 
         chats.append('Guide: %s' % result)
         request.session['data'] = chats
+        print("type",type(result))
         return JsonResponse({"fetch":result})
        
 
