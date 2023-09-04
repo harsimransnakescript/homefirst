@@ -25,11 +25,20 @@ def gpt3(text,request):
     # content = response.choices[0].text.split('.')
     # return response.choices[0].text#to get the results from the open ai
     test = []
+    # def generate_response():
+    #     for chunk in response:
+    #         chunk_message = chunk['choices'][0]['delta']
+    #         test.append(chunk_message.get("content", ''))
+    #         yield chunk_message.get({"content", ''})
     def generate_response():
         for chunk in response:
-            chunk_message = chunk['choices'][0]['delta']
-            test.append(chunk_message.get("content", ''))
-            yield chunk_message.get({"content", ''})
+            if 'choices' in chunk and chunk['choices']:
+                first_choice = chunk['choices'][0]
+                if 'delta' in first_choice:
+                    chunk_message = first_choice['delta']
+                    test.append(chunk_message.get("content", ''))
+                    yield chunk_message.get("content", '')
+
 
         # use Django's StreamingHttpResponse to send the response messages as a stream to the frontend
     return StreamingHttpResponse(generate_response(), headers={'X-Accel-Buffering': 'no'})
@@ -77,9 +86,19 @@ def index(request):
         prompt = open_file('prompt.txt').replace('<<BLOCK>>', text_block)
         prompt = prompt + '\nGuide:'
     
+       
+        response=gpt3(prompt, request)
+        print(response)
+        chunk_str = ""
+        for chunk in response:
+            print("========",chunk)
+            chunk_str += chunk
+        print("-------",chunk_str)
+    
+        result = json.dumps(chunk_str)
         try:
-            result=gpt3(prompt, request)
-            print("result",result)
+            print(result)
+        
         except openai.error.RateLimitError:
             result = "[ INFO ] The server is currently overloaded with other requests. Sorry about that! You can retry your request."
         except openai.error.ServiceUnavailableError:
