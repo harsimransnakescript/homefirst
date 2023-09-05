@@ -33,11 +33,12 @@ function send() {
     var firstText = document.getElementById("firstText");
     var ansBtn7 = document.getElementById("ans-btn7");
     var send = document.getElementById("send");
+    var url = "/generate-stream?message=" + input;
     console.log(input);
     // Function to handle streaming data from Django backend
         async function streamDataFromBackend() {
           try {
-            const response = await fetch('{%url "generate_stream"%}', {
+            const response = await fetch(url, {
               method: 'GET',
             });
 
@@ -60,10 +61,18 @@ function send() {
 
                 // Process the received data (value) here
                 console.log(value);
+                const textDecoder = new TextDecoder('utf-8'); // Replace 'utf-8' with the appropriate encoding
+
+                // Decode the byte data to text
+                const decodedText = textDecoder.decode(value);
+                console.log(decodedText);
+                firstText.append(decodedText);
+
               }
             };
 
-            // Create a TextDecoder to convert streamed bytes to text
+
+
 
 
 

@@ -142,7 +142,9 @@ class StreamGeneratorView(View):
             return JsonResponse({"result": result})
 
     def get(self,request):
-        name = self.gpt3_5(request, "Hello")
+        #get message from request
+        message = request.GET.get('message')
+        name = self.gpt3_5(request, message)
         #return Response({},status.HTTP_200_OK)
         response =  StreamingHttpResponse(name,status=200, content_type='text/event-stream')
         response['Cache-Control']= 'no-cache',
