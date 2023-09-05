@@ -66,7 +66,18 @@ function send() {
                 // Decode the byte data to text
                 const decodedText = textDecoder.decode(value);
                 console.log(decodedText);
-                firstText.append(decodedText);
+                typeWriterEffect(decodedText);
+
+                function typeWriterEffect(text, i = 0) {
+                      if (i < text.length) {
+                        firstText.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(() => {
+                          typeWriterEffect(text, i);
+                        }, 50); // Adjust the delay (in milliseconds) to control the typing speed
+                      }
+                    }
+
 
               }
             };
