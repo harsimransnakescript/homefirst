@@ -134,8 +134,13 @@ class StreamGeneratorView(View):
                     {"role": "user", "content": long_text},
                 ],
                 temperature=0.5,
-                max_tokens=2000)
-            yield response['choices'][0]['message']['content']
+                max_tokens=2000,stream=True)
+            for chunk in response:
+                chunk_message = chunk['choices'][0]['delta']
+                print(chunk_message.get("content", ''))
+                yield chunk_message.get("content", '')
+
+
         except Exception as e:
             print(e)
             result = str(e)

@@ -61,32 +61,15 @@ function send() {
 
                 // Process the received data (value) here
                 console.log(value);
-                const textDecoder = new TextDecoder('utf-8'); // Replace 'utf-8' with the appropriate encoding
+                const textDecoder = new TextDecoder();
 
                 // Decode the byte data to text
                 const decodedText = textDecoder.decode(value);
                 console.log(decodedText);
-                typeWriterEffect(decodedText);
-
-                function typeWriterEffect(text, i = 0) {
-                      if (i < text.length) {
-                        firstText.innerHTML += text.charAt(i);
-                        i++;
-                        setTimeout(() => {
-                          typeWriterEffect(text, i);
-                        }, 50); // Adjust the delay (in milliseconds) to control the typing speed
-                      }
-                    }
-
+                firstText.append(decodedText);
 
               }
             };
-
-
-
-
-
-
             // Start processing the streamed data
             const reader = stream.getReader();
 
