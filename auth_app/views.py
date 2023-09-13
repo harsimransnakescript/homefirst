@@ -2,6 +2,9 @@ from django.shortcuts import render,redirect
 from .models import *
 from django.contrib.auth import login ,logout
 
+def choose_role(request):
+    return render(request,"auth_templates/choose-role.html")
+
 def signin(request):
     if request.method=="POST":
         email=request.POST.get("email")
@@ -10,7 +13,6 @@ def signin(request):
             user_obj=User.objects.get(email=email)
             if otp == user_obj.login_otp:
                 login(request, user_obj)
-                print("its done")
                 return redirect("/")
             else:
                 print("wrong otp")
@@ -31,6 +33,9 @@ def signin(request):
             else:
                 print("user with this email already exists")
     return render(request,"auth_templates/login.html")
+
+def otp_verify(request):
+    return render(request,"auth_templates/verification-otp.html")
 
 
 def signout(request):
