@@ -1,36 +1,45 @@
 from django.shortcuts import render,redirect
 from .models import *
 from django.contrib.auth import login ,logout
+from django.contrib.auth import authenticate
+from django.urls import reverse
+from auth_app import helpers
+
 
 def choose_role(request):
-    return render(request,"auth_templates/choose-role.html")
+    if request.method == "POST":
+        role = request.POST.get("role")
+        print(role)
+        url = reverse("signin") + f"?role={role}"
+        return redirect(url)
+    return render(request, "auth_templates/choose-role.html")
 
 def signin(request):
-    if request.method=="POST":
-        email=request.POST.get("email")
-        otp="1234"
-        try:
-            user_obj=User.objects.get(email=email)
-            if otp == "1234":
-                login(request, user_obj)
-                return redirect("/")
+    selected_role = request.GET.get("role")
+    if request.method == "POST":
+        selected_role = request.POST.get("role")
+        if selected_role == "case_manager":
+            email = request.POST.get("email")
+            if User.objects.filter(email=email).exists():
+                return render(request, "auth_templates/login.html", {"role": selected_role, "error_message": "Email already exists."})
             else:
-                print("wrong otp")
+                helpers.send_email_verification_otp(email)
+                return redirect("otp_verify")
 
-        except:
-            mail_user_obj=User.objects.filter(email=email) 
-            if not mail_user_obj:
-                phone_user_obj=User.objects.filter(phone=phone)
-                if not phone_user_obj:
-                    user = User.objects.create_user( email=email,phone=phone)
-                    user.save()
-                else:
-                    print("user with this number already exists")
+        else:
+            phone = request.POST.get("phone")
+            print(phone)
+          
+            if User.objects.filter(phone=phone).exists():
+                return render(request, "auth_templates/login.html", {"role": selected_role, "error_message": "Phone number already exists."})
             else:
-                print("user with this email already exists")
-    return render(request,"auth_templates/login.html")
+                helpers.send_phone_verification_otp(phone)
+                return redirect("otp_verify")
+
+    return render(request, "auth_templates/login.html",{"role":selected_role})
 
 def otp_verify(request):
+    
     return render(request,"auth_templates/verification-otp.html")
 
 

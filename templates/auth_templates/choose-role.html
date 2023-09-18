@@ -30,7 +30,8 @@
         <div class="container-md">
             <div class="choose_role_inner">
                 <div class="overlay"></div>
-                <form>
+                <form method="post" action="{% url 'choose_role' %}">
+                    {% csrf_token %} 
                     <div class="row">
                         <div class="col-xl-6 col-lg-8 p-0">
                             <div class="choose-your-role">
@@ -38,8 +39,8 @@
                                 <p>Select One of the Options above to Continue.</p>
                                 <div class="select_role">
                                     <div class="form-check p-0">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="flexRadioDefault1">
+                                        <input class="form-check-input" type="radio" name="role"
+                                            id="flexRadioDefault1" value="case_manager">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                             <div class="option_for_role">
                                                 <div class="option_inner">
@@ -55,8 +56,8 @@
                                         </label>
                                     </div>
                                     <div class="form-check p-0">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                            id="flexRadioDefault2" checked>
+                                        <input class="form-check-input" type="radio" name="role"
+                                            id="flexRadioDefault2"  value="patient" checked>
                                         <label class="form-check-label" for="flexRadioDefault2">
                                             <div class="option_for_role">
                                                 <div class="option_inner">
@@ -80,7 +81,7 @@
                                     </div>
                                 </div>
                                 <div class="continue-btn">
-                                    <a href="signUp.html"><button type="button" class="btn">continue</button></a>
+                                    <button type="submit"  class="btn">continue</button>
                                 </div>
                             </div>
                         </div>
