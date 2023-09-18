@@ -20,17 +20,18 @@
                         <img src="{% static 'images/header-logo.png' %}"> </a>
                 </div>
                 <div class="nav-btn py-3">
-                    <a href="/signin/" class="mx-2">Login</a>
+                    <a href="login.html" class="mx-2">Login</a>
+                    <a href="signUP.html" class="signup-btn">Sign Up</a>
                 </div>
             </div>
     </header>
     <!-- header sec end -->
-    <!-- choose Your role sec start --> 
+    <!-- choose Your role sec start -->
     <section class="choose_role signUp_sec">
         <div class="container-md">
             <div class="choose_role_inner signUp_now">
                 <div class="overlay"></div>
-                <form>
+                <form class="signup_form_outer">
                     <div class="row">
                         <div class="col-xl-6 col-lg-8 p-0">
                             <div class="choose-your-role sign-up">
@@ -158,13 +159,13 @@
         otpInputs.forEach(function (input, index) {
             input.addEventListener("input", function () {
                 if (input.value.length === 1 && index < otpInputs.length - 1) {
-                    otpInputs[index + 1].focus(); // Move focus to the next input
+                    otpInputs[index + 1].focus();
                 }
             });
 
             input.addEventListener("keydown", function (e) {
                 if (e.key === "Enter" && index < otpInputs.length - 1) {
-                    otpInputs[index + 1].focus(); // Move focus to the next input
+                    otpInputs[index + 1].focus();
                 }
             });
         });

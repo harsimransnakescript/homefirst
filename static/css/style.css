@@ -242,7 +242,7 @@ header.home-header {
     position: relative;
 }
 
-.choose_role .choose_role_inner .choose-your-role {
+ .choose-your-role {
     padding: 30px 90px;
     border-radius: 12px;
     background: #FFF;
@@ -250,7 +250,7 @@ header.home-header {
     position: relative;
 }
 
-.choose_role_inner .choose-your-role h1 {
+ .choose-your-role h1 {
     color: #231F20;
     font-family: 'Nunito Sans';
     font-size: 24px;
@@ -260,7 +260,7 @@ header.home-header {
     text-transform: capitalize;
 }
 
-.choose_role_inner .choose-your-role p {
+ .choose-your-role p {
     color: rgba(35, 31, 32, 0.50);
     font-family: 'Nunito Sans';
     font-size: 16px;
@@ -269,7 +269,7 @@ header.home-header {
     line-height: normal;
 }
 
-.signUp_sec .choose_role_inner .choose-your-role p {
+.signup_form_outer .choose-your-role p {
     text-transform: capitalize;
 }
 
@@ -368,7 +368,6 @@ header.home-header {
     font-size: 14px;
     font-weight: 400;
     line-height: normal;
-    text-transform: capitalize;
 }
 
 .input-field.form-floating>.form-control-plaintext~label,
@@ -406,11 +405,11 @@ header.home-header {
     bottom: 10px;
 }
 
-.signUp_sec .sign_up_btn {
+.signup_form_outer .sign_up_btn {
     padding: 30px 0px;
 }
 
-.signUp_sec .already_have_acc p {
+.signup_form_outer .already_have_acc p {
     color: #231f20b3;
     font-family: 'Nunito Sans';
     font-size: 14px;
@@ -419,12 +418,12 @@ header.home-header {
     line-height: normal;
 }
 
-.signUp_sec .already_have_acc {
+.signup_form_outer .already_have_acc {
     padding-top: 30px;
     border-top: 1px solid #00000012;
 }
 
-.signUp_sec .already_have_acc p a {
+.signup_form_outer .already_have_acc p a {
     color: #74BC1F;
     font-weight: 700;
     text-transform: capitalize;
@@ -611,7 +610,7 @@ footer .footer_links .site_links a {
 }
 
 @media(max-width:767px) {
-    .choose_role .choose_role_inner .choose-your-role {
+     .choose-your-role {
         padding: 30px 30px;
     }
 
@@ -623,7 +622,7 @@ footer .footer_links .site_links a {
         padding: 50px 30px;
     }
 
-    .signUp_sec .sign_up_btn {
+    .signup_form_outer .sign_up_btn {
         padding: 20px 0px;
     }
 
@@ -700,11 +699,11 @@ footer .footer_links .site_links a {
         padding-top: 20px;
     }
 
-    .choose_role_inner .choose-your-role h1 {
+     .choose-your-role h1 {
         font-size: 20px;
     }
 
-    .choose_role_inner .choose-your-role p {
+     .choose-your-role p {
         font-size: 14px;
         margin-bottom: 0px;
     }
@@ -794,7 +793,7 @@ footer .footer_links .site_links a {
         display: grid;
     }
 
-    .choose_role .choose_role_inner .choose-your-role {
+     .choose-your-role {
         padding: 20px 20px;
     }
 
@@ -853,7 +852,7 @@ footer .footer_links .site_links a {
 }
 
 @media(max-width:320px) {
-    .choose_role_inner .choose-your-role h1 {
+     .choose-your-role h1 {
         font-size: 18px;
     }
 
