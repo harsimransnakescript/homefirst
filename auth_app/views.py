@@ -1,42 +1,49 @@
 from django.shortcuts import render,redirect
 from .models import *
-from django.contrib.auth import login
+from django.contrib.auth import login ,logout
+from django.contrib.auth import authenticate
+from django.urls import reverse
+from auth_app import helpers
 
-# Create your views here.
-def signup(request):
-    if request.method=="POST":
-        user=request.POST.get("user")
-        email=request.POST.get("email")
-        phone=request.POST.get("phone")
-        name=request.POST.get("name")
-        mail_user_obj=User.objects.filter(email=email)
-        print(mail_user_obj)
-        if not mail_user_obj:
-            phone_user_obj=User.objects.filter(phone=phone)
-            if not phone_user_obj:
-                user = User.objects.create_user( email=email,username1=user,phone=phone,first_name=name)
-                user.save()
-            else:
-                print("user with this number already exists")
-        else:
-            print("user with this email already exists")
-        return redirect("signup")
-    return render(request,"auth_templates/signup.html")
 
+def choose_role(request):
+    if request.method == "POST":
+        role = request.POST.get("role")
+        print(role)
+        url = reverse("signin") + f"?role={role}"
+        return redirect(url)
+    return render(request, "auth_templates/choose-role.html")
 
 def signin(request):
-    if request.method=="POST":
-        email=request.POST.get("email")
-        otp="1234"
-        try:
-            user_obj=User.objects.get(email=email)
-            if otp == user_obj.login_otp:
-                login(request, user_obj)
-                print("its done")
-                return redirect("/")
+    selected_role = request.GET.get("role")
+    if request.method == "POST":
+        selected_role = request.POST.get("role")
+        if selected_role == "case_manager":
+            email = request.POST.get("email")
+            if User.objects.filter(email=email).exists():
+                return render(request, "auth_templates/login.html", {"role": selected_role, "error_message": "Email already exists."})
             else:
-                print("wrong otp")
+                helpers.send_email_verification_otp(email)
+                return redirect("otp_verify")
 
-        except:
-            print("no user registered with this email")
-    return render(request,"auth_templates/login.html")
+        else:
+            phone = request.POST.get("phone")
+            print(phone)
+          
+            if User.objects.filter(phone=phone).exists():
+                return render(request, "auth_templates/login.html", {"role": selected_role, "error_message": "Phone number already exists."})
+            else:
+                helpers.send_phone_verification_otp(phone)
+                return redirect("otp_verify")
+
+    return render(request, "auth_templates/login.html",{"role":selected_role})
+
+def otp_verify(request):
+    
+    return render(request,"auth_templates/verification-otp.html")
+
+
+def signout(request):
+    logout(request)
+    return redirect('signin')
+

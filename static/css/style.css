@@ -1,0 +1,878 @@
+/* font kit start here */
+@font-face {
+    font-family: 'Nunito Sans';
+    src: url('../fonts/NunitoSans-SemiBold.woff2') format('woff2'),
+        url('../fonts/NunitoSans-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Nunito Sans';
+    src: url('../fonts/NunitoSans-Bold.woff2') format('woff2'),
+        url('../fonts/NunitoSans-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Nunito Sans';
+    src: url('../fonts/NunitoSans-Regular.woff2') format('woff2'),
+        url('../fonts/NunitoSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+
+/* font kit end here */
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Nunito Sans';
+}
+
+a {
+    text-decoration: none;
+}
+
+/* header css start */
+header.site_header {
+    padding: 20px 0px;
+}
+
+.site_header .nav {
+    align-items: center;
+}
+
+header.site_header .nav-btn a {
+    border-radius: 6px;
+    border: 1px solid #74BC1F;
+    padding: 11px 19px;
+    color: #74BC1F;
+    font-family: 'Nunito Sans';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+header.site_header .nav-btn a.signup-btn {
+    background: #74BC1F;
+    color: #fff;
+}
+
+/* header css end */
+/* home header css start */
+header.home-header .navbar-nav a {
+    color: #231f20b3;
+    font-family: 'Nunito Sans';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+header.home-header .navbar-nav a.active {
+    color: #74BC1F;
+    font-weight: 700;
+}
+
+header.home-header .navbar-nav {
+    gap: 40px;
+}
+
+.home-header .hi_there_btn button, .home-header .hi_there_btn button:active {
+    border-radius: 6px;
+    background: #74BC1F;
+    color: #FFF;
+    font-family: 'Nunito Sans';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: capitalize;
+    padding: 10px 17px;
+}
+
+header.home-header {
+    padding: 20px 0px;
+}
+
+/* home header css end */
+/* home sec css start */
+.home_sec {
+    margin-bottom: 70px;
+}
+
+.home_sec .home_sec_inner {
+    background-image: url(../images/home-bg.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+    background-position: center;
+}
+
+.home_sec .home_sec_inner .overlay {
+    position: absolute;
+    border-radius: 16px;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.65) 100%);
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+.home_content {
+    position: relative;
+    z-index: 2;
+}
+
+.home_sec .home_sec_inner .home_content h1 {
+    color: #FFF;
+    text-align: center;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 60px;
+    text-transform: capitalize;
+    margin-bottom: 35px;
+    padding: 0px 20px;
+}
+
+.home_sec .home_sec_inner .home_content p {
+    color: #FFF;
+    text-align: center;
+    font-family: 'Nunito Sans';
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    margin-bottom: 50px;
+    padding: 0px 100px;
+}
+
+.home_sec .home_sec_inner .home_content .home_sec_btns button {
+    border-radius: 6px;
+    border: 1px solid #74BC1F;
+    background: #74BC1F;
+    color: #FFF;
+    font-family: 'Nunito Sans';
+    font-size: 16px;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: capitalize;
+    padding: 19px 19px;
+}
+
+.home_sec .home_sec_inner .home_content .home_sec_btns button.case-manager-portal {
+    background-color: transparent;
+    border: 1px solid #fff;
+}
+
+.home_sec .home_sec_inner .home_content .home_sec_btns {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+}
+
+.how_can_i_assist {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 75px;
+    border-radius: 100px;
+    background: #FFF;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.13);
+    padding: 14px 25px;
+}
+
+.assist_content {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.how_can_i_assist h6 {
+    color: #231F20;
+    text-align: center;
+    font-family: 'Nunito Sans';
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
+    text-align: left;
+}
+
+.home_bottom {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+.ask_here_btn button {
+    border-radius: 4px;
+    background: #74BC1F;
+    color: #FFF;
+    font-family: 'Nunito Sans';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    text-transform: capitalize;
+    border: transparent;
+    padding: 7px 18px;
+}
+
+/* home sec css end */
+/* choose-your-role css start */
+.choose_role .choose_role_inner {
+    background-image: url(../images/login-page-bg.png);
+    padding: 90px 40px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 16px;
+    position: relative;
+}
+
+ .choose-your-role {
+    padding: 30px 90px;
+    border-radius: 12px;
+    background: #FFF;
+    text-align: center;
+    position: relative;
+}
+
+ .choose-your-role h1 {
+    color: #231F20;
+    font-family: 'Nunito Sans';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+ .choose-your-role p {
+    color: rgba(35, 31, 32, 0.50);
+    font-family: 'Nunito Sans';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.signup_form_outer .choose-your-role p {
+    text-transform: capitalize;
+}
+
+.select_role {
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    padding: 40px 0px;
+}
+
+.select_role .option_for_role {
+    border-radius: 8px;
+    background: #FFF;
+    box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.10);
+    width: 170px;
+    height: 170px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+}
+
+.select_role .form-check-input:checked + label .option_for_role {
+    border: 1.5px solid #74BC1F;
+    background: rgba(116, 188, 31, 0.07);
+}
+.select_role .form-check-input:checked + label  .option_for_role h3{
+    color: #74BC1F;
+}
+.select_role .form-check-input:checked + label  .option_for_role svg path{
+    fill: #74BC1F;
+}
+.select_role .form-check-input {
+    display: none;
+}
+
+.select_role .option_for_role.active {
+    border: 1.5px solid #74BC1F;
+    background: rgba(116, 188, 31, 0.07);
+}
+
+.select_role .option_for_role h3 {
+    color: #918F8F;
+    font-family: 'Nunito Sans';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: capitalize;
+    margin-top: 15px;
+    margin-bottom: 0px;
+}
+
+.select_role .option_for_role.active svg path {
+    fill: #74bc1f;
+}
+
+.select_role .option_for_role.active h3 {
+    color: #74BC1F;
+}
+
+.continue-btn button,
+.continue-btn button:hover {
+    border-radius: 6px;
+    border: 1px solid #74BC1F;
+    background: #74BC1F;
+    padding: 11px 19px;
+    color: #FFF;
+    font-family: 'Nunito Sans';
+    font-size: 16px;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.continue-btn button:active {
+    background-color: #74BC1F !important;
+    color: #FFF !important;
+}
+
+/* choose-your-role css end */
+/* sign up css start */
+.input-field input {
+    border: none;
+    border-bottom: 1px solid #0000001a;
+    border-radius: 0px;
+    height: 45px !important;
+    min-height: auto !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    padding-bottom: 8px !important;
+    position: relative;
+    color: #231f20b3;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.input-field.form-floating>.form-control-plaintext~label,
+.form-floating>.form-control:focus~label,
+.form-floating>.form-control:not(:placeholder-shown)~label,
+.form-floating>.form-select~label {
+    transform: scale(.85) translateY(-1rem) translateX(0.15rem);
+}
+
+.input-field input:focus {
+    box-shadow: none;
+    border-color: #0000001a;
+}
+
+.input-field.form-floating>label {
+    padding: 16px 0px;
+}
+
+.input-field label {
+    color: #231f20b3;
+    font-family: 'Nunito Sans';
+    font-size: 14px;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.signUp_form {
+    padding-top: 34px;
+}
+
+.show_password_icon {
+    position: absolute;
+    right: 0px;
+    bottom: 10px;
+}
+
+.signup_form_outer .sign_up_btn {
+    padding: 30px 0px;
+}
+
+.signup_form_outer .already_have_acc p {
+    color: #231f20b3;
+    font-family: 'Nunito Sans';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.signup_form_outer .already_have_acc {
+    padding-top: 30px;
+    border-top: 1px solid #00000012;
+}
+
+.signup_form_outer .already_have_acc p a {
+    color: #74BC1F;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+/* sign up css end */
+/* login css start */
+.input-field.remember_me {
+    display: flex;
+    justify-content: space-between;
+}
+
+.remember_me_checkbox .form-check-input[type=checkbox] {
+    height: 20px !important;
+    width: 20px;
+    border-radius: 4px;
+    border: 1px solid #D9D9D9;
+}
+
+.remember_me_checkbox .form-check-input[type=checkbox]:checked {
+    background-color: #74BC1F;
+}
+
+.remember_me_checkbox label {
+    text-transform: inherit;
+    margin-left: 10px;
+}
+
+.remember_me .forgot_pass a {
+    color: #F00;
+    font-family: 'Nunito Sans';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+}
+.choose_role .choose_role_inner .overlay{
+    position: absolute;
+    border-radius: 16px;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.07) 0%, rgba(0, 0, 0, 0.07) 100%);
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+}
+
+/* login css end */
+/* verification-otp css start */
+.verification-otp-subHeading span {
+    font-weight: 700;
+}
+
+.verification_otp .enter_otp input {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    background: #DEDEDE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: transparent;
+    color: #000;
+    font-size: 23.04px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.verification_otp .enter_otp input:focus-visible {
+    outline: none;
+}
+
+.signUp_form.verification_otp .enter_otp {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    padding-bottom: 30px;
+}
+
+/*verification-otp css end */
+
+/* footer css start */
+footer .footer-top {
+    padding: 60px 0px 50px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+footer .site-logo {
+    padding-bottom: 22px;
+}
+
+footer .footer_left p {
+    color: #231f20b3;
+    font-family: 'Nunito Sans';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+footer .footer_links .site_links {
+    display: grid;
+    grid-template-columns: 2fr 2fr;
+    gap: 18px;
+    grid-column-gap: 60px;
+}
+
+footer h2.footer-heading {
+    color: #231F20;
+    font-family: 'Nunito Sans';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: capitalize;
+    margin-bottom: 18px;
+}
+
+footer .footer_links .site_links a {
+    color: #231f20b3;
+    font-family: 'Nunito Sans';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.footer_social_links .footer_icons {
+    display: flex;
+    gap: 18px;
+}
+
+.footer_social_links .footer_icons .social_icon:hover circle {
+    fill: #74BC1F;
+    stroke: #74bc1f;
+}
+
+.footer_social_links .footer_icons .social_icon:hover path {
+    fill: #fff;
+}
+
+.footer-bottom {
+    padding: 15px 0px;
+}
+
+.footer-bottom .footer_copyright p {
+    color: #00000066;
+    font-family: 'Nunito Sans';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 0px;
+}
+
+/* footer css end */
+
+/* resposnive css start */
+@media(max-width:992px) {
+    .home_content {
+        max-width: 100%;
+        padding: 0px 20px;
+    }
+    .home_sec .home_sec_inner .home_content h1{
+        padding: 0px;
+        font-size: 32px;
+        line-height: 40px;
+    }
+
+    .how_can_i_assist {
+        gap: 30px;
+    }
+
+    .home_bottom {
+        width: 60%;
+    }
+
+    header.home-header .navbar-nav {
+        gap: 10px;
+    }
+}
+
+@media(max-width:767px) {
+     .choose-your-role {
+        padding: 30px 30px;
+    }
+
+    .select_role {
+        padding: 20px 0px;
+    }
+
+    .choose_role .choose_role_inner {
+        padding: 50px 30px;
+    }
+
+    .signup_form_outer .sign_up_btn {
+        padding: 20px 0px;
+    }
+
+    footer .footer-top {
+        padding: 60px 0px 0px;
+    }
+
+    .home_sec .home_sec_inner .home_content h1 {
+        font-size: 26px;
+        line-height: 40px;
+    }
+
+    .home_sec .home_sec_inner .home_content p {
+        padding: 0px;
+    }
+
+    .home_bottom {
+        width: 100%;
+        max-width: 70%;
+    }
+
+    .how_can_i_assist {
+        gap: 5px;
+    }
+
+    header.home-header .navbar-toggler:focus {
+        box-shadow: none;
+    }
+
+    .hi_there_btn {
+        margin-top: 20px;
+    }
+    header.home-header div#navbarSupportedContent{
+        position: absolute;
+        top: 95px;
+        z-index: 99;
+        background: rgb(116, 188, 31);
+        width: -webkit-fill-available;
+        left: 10px;
+        right: 10px;
+        padding: 10px;
+    }
+    header.home-header .navbar-nav a.active{
+        color: #ffffff;
+    }
+    .home-header .hi_there_btn button, .home-header .hi_there_btn button:active{
+        background: #000000;
+    }
+    header.home-header .navbar-nav a{
+        color: #000000;
+    }
+}
+
+@media(max-width:576px) {
+
+    header.site_header,
+    header.home-header {
+        padding: 10px 0px;
+    }
+
+    .select_role {
+        gap: 20px;
+    }
+
+    .select_role .option_for_role h3 {
+        font-size: 16px;
+    }
+
+    .choose_role .choose_role_inner {
+        padding: 20px 20px;
+    }
+
+    .signUp_form {
+        padding-top: 20px;
+    }
+
+     .choose-your-role h1 {
+        font-size: 20px;
+    }
+
+     .choose-your-role p {
+        font-size: 14px;
+        margin-bottom: 0px;
+    }
+
+    .continue-btn button,
+    .continue-btn button:hover {
+        font-size: 14px;
+    }
+
+    .logo img {
+        width: 70px;
+    }
+
+    header.site_header .nav-btn a {
+        font-size: 14px;
+        padding: 8px 19px;
+
+    }
+
+    footer .footer-top {
+        padding: 40px 0px 0px;
+    }
+
+    .home_bottom {
+        left: 23px;
+        transform: inherit;
+        right: 26px;
+        width: auto;
+        max-width: inherit;
+    }
+
+    .home_sec .home_sec_inner .home_content h1 {
+        font-size: 22px;
+        line-height: normal;
+    }
+
+    .home_sec .home_sec_inner .home_content .home_sec_btns button {
+        padding: 13px 19px;
+        font-size: 14px;
+    }
+
+    .how_can_i_assist {
+        background: transparent;
+        display: grid;
+        gap: 15px;
+        box-shadow: none;
+        justify-content: center;
+    }
+
+    .assist_content {
+        background: #FFF;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        padding: 10px 10px;
+        border-radius: 100px;
+        justify-content: center;
+    }
+
+    .ask_here_btn button {
+        width: 100%;
+        border-radius: 100px;
+        padding: 10px 18px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+
+    .home_bottom {
+        position: inherit;
+    }
+
+    .home_sec {
+        margin-bottom: 0px;
+    }
+
+    .home_content {
+        padding: 50px 20px;
+    }
+
+    .home_sec .home_sec_inner {
+        height: 500px;
+    }
+    header.home-header div#navbarSupportedContent{
+        top: 65px;
+    }
+}
+
+@media(max-width:420px) {
+    .select_role {
+        display: grid;
+    }
+
+     .choose-your-role {
+        padding: 20px 20px;
+    }
+
+    .input-field.remember_me {
+        display: grid;
+        gap: 10px;
+        text-align: left;
+    }
+
+    footer .footer_links .site_links a,
+    footer .footer_left p {
+        font-size: 14px;
+    }
+
+    footer .site-logo img {
+        width: 80px;
+    }
+
+    .select_role .option_for_role {
+        width: 140px;
+        height: 120px;
+    }
+
+    .select_role .option_for_role h3 {
+        font-size: 14px;
+    }
+
+    .verification_otp .enter_otp input {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .ask_here_btn {
+        text-align: center;
+    }
+
+    .home_sec .home_sec_inner .home_content .home_sec_btns {
+        display: grid;
+        gap: 15px;
+    }
+
+    .home_bottom {
+        bottom: -60px;
+    }
+
+    .home_sec .home_sec_inner .home_content h1 {
+        margin-bottom: 15px;
+        font-size: 18px;
+    }
+
+    .home_sec .home_sec_inner .home_content p {
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+}
+
+@media(max-width:320px) {
+     .choose-your-role h1 {
+        font-size: 18px;
+    }
+
+    header.site_header .nav-btn a {
+        font-size: 12px;
+        padding: 5px 15px;
+    }
+
+    .logo img {
+        width: 50px;
+    }
+
+    header.site_header {
+        padding: 5px 0px;
+    }
+
+    .signUp_form.verification_otp .enter_otp {
+        justify-content: space-between;
+        gap: initial;
+    }
+}
+
+/* resposnive css end */

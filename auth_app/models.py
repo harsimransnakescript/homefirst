@@ -7,7 +7,7 @@ from django.contrib.auth.models import (
 )
 
 class UserManager(BaseUserManager):
-    def create_user(self, email,username1 = None ,phone=None, first_name= None):
+    def create_user(self, email,username1 = None ,phone=None, first_name= None,password=None):
         if not email:
             raise ValueError('Users must have an email address')
 
@@ -16,6 +16,7 @@ class UserManager(BaseUserManager):
             first_name=first_name,
             username1=username1
         )
+        user.set_password(password)
         user.save(using=self._db)
         return user
 
@@ -72,3 +73,12 @@ class User(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+    
+class Otp(models.Model):
+    email = models.EmailField(unique=True, null=True, blank=True)
+    phone_number = models.CharField(max_length=15, unique=True, null=True)
+    otp_code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"OTP for {self.email or self.phone_number}: {self.otp_code}"

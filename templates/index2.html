@@ -1,0 +1,125 @@
+<html>
+<head>
+    <title>Django REST API Streaming</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+</body>
+{% csrf_token %}
+<div class="chat_section">
+    <div id="display">
+      <section id="firstText"></section>
+
+    </div>
+    <div id="type-box">
+      <fieldset>
+        <input type="text" autocomplete="off" role="combobox" list="" id="input" name="browsers"
+          placeholder="Ask me anything" class="form-control1">
+        <datalist id="browsers" role="listbox">
+          {% for question in questions %}
+          <option value="{{ question }}">{{ question }}</option>
+          {% endfor %}
+        </datalist>
+      </fieldset>
+      <a><button id="send" onclick="send()" class="btn get_answer_ltest">SEND</button></a>
+      <a><button id="ans-btn7" class="btn get_answer_ltest">CLEAR</button></a>
+      <br>
+    </div>
+  </div>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script>
+function send() {
+  var csrfToken = "{{ csrf_token }}";
+    var input = document.getElementById("input").value;
+    var display = document.getElementById("display");
+    var firstText = document.getElementById("firstText");
+    var ansBtn7 = document.getElementById("ans-btn7");
+    var send = document.getElementById("send");
+    var url = "/generate-stream"
+    console.log(input);
+
+      function getoldmessages(){
+        const oldmessages = []
+        const Allmessagedivs = display.querySelectorAll("div")
+        for (let i = 0; i < Allmessagedivs.length; i++) {
+          const messagediv = Allmessagedivs[i];
+          if(messagediv.classList.contains("user")){
+            oldmessages.push({role:"user",content:messagediv.innerHTML})
+          }else if(messagediv.classList.contains("system")){
+            oldmessages.push({role:"system",content:messagediv.innerHTML})
+          }
+        }
+        return oldmessages
+      }
+
+
+
+
+    // Function to handle streaming data from Django backend
+        async function streamDataFromBackend() {
+          try {
+            const response = await fetch(url, {
+              method: 'POST',
+              headers: {
+                "X-CSRFToken": csrfToken,  // Include the CSRF token in the header
+                "Content-Type": "application/json",  // Set the content type accordingly
+            },
+              body:JSON.stringify({messages:[...getoldmessages(),{role:"user",content:input}]})
+            });
+
+            // Check if the response status is OK (HTTP status code 200)
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            // Create a ReadableStream from the response
+            const stream = response.body;
+
+            // Define a function to process the streamed data
+            const processData = async (reader,messageelm) => {
+              while (true) {
+                const { done, value } = await reader.read();
+
+                if (done) {
+                  break; // Exit the loop when the stream ends
+                }
+
+                // Process the received data (value) here
+      
+                const textDecoder = new TextDecoder();
+
+                // Decode the byte data to text
+                const decodedText = textDecoder.decode(value);
+          
+                messageelm.append((decodedText));
+
+              }
+            };
+            // Start processing the streamed data
+            const reader = stream.getReader();
+
+            const elm = document.createElement("div")
+            elm.setAttribute("class","system")
+            display.append(elm)
+            await processData(reader,elm);
+
+          } catch (error) {
+            console.error('An error occurred:', error);
+          }
+        }
+
+        // Call the function to start streaming data
+        streamDataFromBackend();
+
+
+
+
+    //set the user input to the chatbox
+    display.innerHTML=display.innerHTML+"<div class='user'>"+input+"</div>";
+
+    document.getElementById("input").value="";
+
+    }
+</script>
+</html>
