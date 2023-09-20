@@ -10,34 +10,94 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    
-    {% block content %}
-    <div class="container">
-        <div class="container text-center">
-            <h1 class="mt-5 mb-4">Products</h1>
-        </div>
-    
-        <div class="row">
-            {% for product in products %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card">
-                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">Category: {{ product.group }}</p>
-                        <!-- Add more product details here -->
-                    </div>
+{% block content %}
+<div class="container">
+    <div class="container text-center">
+        <h1 class="mt-5 mb-4">Products</h1>
+    </div>
+
+    <!-- Category filtering links -->
+
+    <div class="desktop-pro-cat" style="display:block!important">
+        <form id="desktopcat" style=" overflow-y:scroll; max-height :900px;">
+             <!-- Add "Show All" button -->
+             <div class="form-check" onClick="CategorFun('all')"  style="cursor:pointer;" >
+                <label data-category="all" id="category">
+                    <input class="form-check-input"  id="showAll" data-category="all" type="radio" name="flexRadioDefault" >
+                    All Products</label>
+            </div>
+            {% for i in categories %}
+                <div class="form-check" onClick="CategorFun('{{i.name}}')"  style="cursor:pointer;" >
+                    <label data-category="{{i.name}}" id="category">
+                        <input class="form-check-input"  id="{{i.name}}" data-category="{{i.name}}" type="radio" name="flexRadioDefault" >
+                        {{i.name}}</label>
+                </div>
+            {% endfor %}
+            
+        </form>
+    </div>
+
+    <div class="row">
+        {% for product in products %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">Category: {{ product.group }}</p>
+                    <!-- Add more product details here -->
                 </div>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
-    {% endblock %}
-    
-    <!-- Add Bootstrap JS and jQuery (optional, for certain Bootstrap features) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
-    </body>
-    </html>
+</div>
+{% endblock %}
+
+<!-- Add Bootstrap JS and jQuery (optional, for certain Bootstrap features) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Add the JavaScript/jQuery code for category filtering here -->
+<script>
+    // Function to filter products by category
+    function filterProductsByCategory(category) {
+        $('.col-lg-4').hide(); // Hide all products initially
+
+        if (category === 'all') {
+            $('.col-lg-4').show(); // Show all products if "All" is selected
+        } else {
+            $('.col-lg-4').each(function () {
+                var productCategory = $(this).find('.card-text').text().split(': ')[1];
+                if (productCategory === category) {
+                    $(this).show(); // Show the product if it belongs to the selected category
+                }
+            });
+        }
+    }
+
+    // Function to handle category selection
+    function CategorFun(category) {
+        filterProductsByCategory(category);
+    }
+
+    // Initially, show all products when the page loads
+    $(document).ready(function () {
+        filterProductsByCategory('all');
+    });
+
+    // Add event listener to category radio buttons
+    $('input[name="flexRadioDefault"]').change(function () {
+        var selectedCategory = $(this).data('category');
+        filterProductsByCategory(selectedCategory);
+    });
+</script>
+</body>
+</html>
+
+
+
+
+
+
