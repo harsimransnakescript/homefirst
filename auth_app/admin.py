@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import User, Otp, AllowedDomain
+from . models import User, Otp, AllowedDomain, UserProfile
 from .forms import UserCreationForm
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
@@ -34,3 +34,4 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(User,UserAdmin)
 admin.site.register(Otp)
 admin.site.register(AllowedDomain)
+admin.site.register(UserProfile)

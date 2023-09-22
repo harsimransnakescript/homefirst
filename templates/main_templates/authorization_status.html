@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authorization Status</title>
+</head>
+<body>
+    <h1>Authorization Status</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Sample</th>
+                <th>Status</th>
+                <th>Requested Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sample_request in sample_requests %}
+                <tr>
+                    <td>{{ sample_request.sample.name }}</td>
+                    <td>{{ sample_request.status }}</td>
+                    <td>{{ sample_request.requested_date }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
