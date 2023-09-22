@@ -3,7 +3,8 @@ from django.contrib.auth import login, logout
 from django.urls import reverse
 from auth_app import helpers
 from django.contrib import messages
-from .models import User, AllowedDomain
+from .models import User, AllowedDomain, UserProfile
+from django.contrib.auth.decorators import login_required
 
 def choose_role(request):
     """
@@ -126,6 +127,33 @@ def otp_verify(request):
         request, "auth_templates/verification-otp.html", {"role": selected_role}
     )
 
+@login_required
+def create_user_profile(request):
+    if request.method == 'POST':
+        username = request.user.username1
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        date_of_birth = request.POST.get('date_of_birth')
+        bio = request.POST.get('bio')
+        email = request.POST.get('email')
+        phone_number = request.POST.get('phone_number')
+        address = request.POST.get('address')
+
+        # Create the user profile
+        UserProfile.objects.create(
+            user=request.user,
+            first_name=first_name,
+            last_name=last_name,
+            date_of_birth=date_of_birth,
+            bio=bio,
+            email=email,
+            phone_number=phone_number,
+            address=address,
+        )
+
+        return redirect('/')
+
+    return render(request, 'auth_templates/profile.html')  
 
 def signout(request):
     logout(request)
