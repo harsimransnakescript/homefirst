@@ -1,7 +1,5 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
@@ -10,7 +8,7 @@ class UserManager(BaseUserManager):
     def create_user(self, email,username1 = None ,phone=None, first_name= None,password=None):
         if not email:
             raise ValueError('Users must have an email address')
-
+        
         user = self.model(
             email=self.normalize_email(email),
             first_name=first_name,
@@ -54,7 +52,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name']
-
+        
     def __str__(self):
         return self.username1
 
@@ -82,3 +80,9 @@ class Otp(models.Model):
 
     def __str__(self):
         return f"OTP for {self.email or self.phone_number}: {self.otp_code}"
+    
+class AllowedDomain(models.Model):
+    domain = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.domain

@@ -11,6 +11,8 @@
 </head>
 
 <body>
+    
+  
     <!-- header sec start -->
     <header class="site_header">
         <div class="container-md">
@@ -24,6 +26,14 @@
                 </div>
             </div>
     </header>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div{% if message.tags %} class="alert alert-danger text-center"{% endif %}>{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <!-- header sec end -->
     <!-- choose Your role sec start -->
     <section class="choose_role signUp_sec">

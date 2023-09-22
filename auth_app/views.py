@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout
 from django.urls import reverse
 from auth_app import helpers
 from django.contrib import messages
-from .models import User
+from .models import User, AllowedDomain
 
 def choose_role(request):
     """
@@ -26,6 +26,14 @@ def signin(request):
         selected_role = request.POST.get("role")
         if selected_role == "case_manager":
             email = request.POST.get("email")
+            email_domain = email.split('@')[-1]
+        
+            # Check if the email domain is allowed
+            try:
+                allowed_domain = AllowedDomain.objects.get(domain=email_domain)
+            except AllowedDomain.DoesNotExist:
+                messages.error(request, f"Only organisation email domain is allowed.")
+                return render(request, "auth_templates/login.html", {"role": selected_role})
 
             # Store the email and send an email verification OTP
             request.session["email"] = email
