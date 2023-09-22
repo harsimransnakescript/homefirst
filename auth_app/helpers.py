@@ -35,15 +35,14 @@ def send_phone_verification_otp(recipient_number):
     otp_model.save()
 
     account_sid = settings.TWILIO_ACCOUNT_SID
+    api_key = settings.TWILIO_API_KEY
     auth_token = settings.TWILIO_AUTH_TOKEN
-    client = Client(account_sid, auth_token)
+    client = Client(api_key,auth_token,account_sid)
 
     body = f"Your phone verification OTP: {otp}"
     from_number = settings.TWILIO_PHONE_NUMBER
 
-    message = client.messages.create(
-        body=body, from_=from_number, to=recipient_number
-    )
+    message = client.messages.create(to=recipient_number, from_=from_number, body=body)
     print(f"OTP sent to {recipient_number} with message SID: {message.sid}")
 
     return otp  # Return the generated OTP value
