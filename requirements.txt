@@ -14,6 +14,7 @@ constantly==15.1.0
 cryptography==41.0.3
 daphne==4.0.0
 Django==4.2.4
+et-xmlfile==1.1.0
 frozenlist==1.4.0
 hyperlink==21.0.0
 idna==3.4
@@ -21,6 +22,8 @@ incremental==22.10.0
 multidict==6.0.4
 numpy==1.26.0
 openai==0.27.10
+openpyxl==3.1.2
+openpyxl-image-loader==1.0.5
 pandas==2.1.1
 Pillow==10.0.0
 pyasn1==0.5.0
