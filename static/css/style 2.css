@@ -564,3 +564,14 @@ button.previous-btn {
     width: -webkit-fill-available;
   }
 }
+
+#product-slider {
+  /* Define styles for the slider, e.g., position, background, width, height, etc. */
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 300px;
+  height: 200px;
+  overflow-y: auto; /* Add scrollbars if necessary */
+  /* Add other styles as needed */
+}

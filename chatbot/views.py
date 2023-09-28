@@ -14,6 +14,7 @@ def index(request):
     return render(request,'templates/index2.html')
 
 class StreamGeneratorView(View):
+
     def write(self,request,rawjsonData):
         parsedJsonData = json.loads(rawjsonData.lstrip('$$').strip())
         print(parsedJsonData)
@@ -25,17 +26,17 @@ class StreamGeneratorView(View):
             q_objects |= Q(name__icontains=value) | Q(group__icontains=value)| Q(specifications__icontains=value) | Q(other_info__icontains=value)
             
         found_products = ProductsModel.objects.filter(q_objects)
-        print(found_products)
 
+        productsFound = bool(found_products)
+      
         if found_products:
-            print(found_products)
     
             response = "Found products:\n"
             for product in found_products:
                 response += f"Name: {product.name}, Group: {product.group}, Image: {product.image}\n"
         else:
             response = "No products found for the given keywords."
-        return response
+        return response, productsFound 
         # return parsedJsonData['keywordsArray']
         
     def gpt3_5(self,request, prompt):
@@ -79,12 +80,59 @@ class StreamGeneratorView(View):
             print(e)
             result = str(e)
             return JsonResponse({"result": result})
+        
+    def case_manager_chat(self, request, prompt):
+        try:
+            instructions = {
+                "role": "system",
+                "content": """
+                    !IMPORTANT: You are a case manager assistant. Your goal is to assist with managing sample products for patient.
+                    1. Respond to user queries and requests related to patients.
+                    2. Ask for case details, such as title, description, or status, when necessary.
+                    3. Provide updates on case statuses and progress.
+                    4. Use keywords to search for specific cases. Reply with $$ { "keywordsArray": ["keyword1", "keyword2"] }
+                    5. Be concise and professional in your responses.
+                """
+            }
+            
+            conversation = [instructions] + prompt
 
+            response = openai.ChatCompletion.create(
+                model="gpt-4",  # Use the appropriate OpenAI model
+                messages=conversation,
+                temperature=0.5,
+                max_tokens=2048,
+                stream=True
+            )
+
+            json_data_string = ""
+            write_json_config = False
+
+            for chunk in response:
+                chunk_message = chunk['choices'][0]['delta']
+                word = chunk_message.get("content", '')
+                if "$$" in word:
+                    write_json_config = True
+
+                if write_json_config:
+                    json_data_string += word
+                    if "}" in word:
+                        write_json_config = False
+                        data = self.write(request, json_data_string)
+                        yield data
+                else:
+                    yield word
+
+        except Exception as e:
+            print(e)
+            result = str(e)
+            return JsonResponse({"result": result})
+        
     def post(self,request):
         data = json.loads(request.body.decode('utf-8'))
         #get message from request
         message =  data.get('messages', [])
-        name = self.gpt3_5(request, message)
+        name = self.case_manager_chat(request, message)
         #return Response({},status.HTTP_200_OK)
         response =  StreamingHttpResponse(name,status=200, content_type='text/event-stream')
         return response

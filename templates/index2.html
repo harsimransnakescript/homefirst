@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Django REST API Streaming</title>
+    <title>Chatbot</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel='stylesheet' href="static/css/bootstrap.min 2.css">
     <link rel='stylesheet' href="static/css/bootstrap-material-design.css">
@@ -50,10 +50,13 @@
 {% csrf_token %}
 <div class="chat_section">
     <div id="display">
-      
     
-    </div>
+  
     <div id="type-box">
+      <div id="product-slider" style="display: none;">
+        <!-- Add your product content here -->
+      </div>
+      
       <fieldset>
     
         <datalist id="browsers" role="listbox">
@@ -87,6 +90,8 @@
 </div>
 <!-- partial -->
 <script src="static/js/jquery.min.js"></script>
+
+
 <script src="static/js/bootstrap.min 2.js"></script>
 <script src="static/js/script.js"></script>
 </body>
@@ -179,7 +184,18 @@ function send() {
             console.log("---",result)
             await processData(reader,cmMsgTextDiv);
            
+            // Check the content inside cmMsgTextDiv for the "Found products:" message
+            const cmMsgTextContent = cmMsgTextDiv.textContent;
+            if (cmMsgTextContent.includes("Found products:")) {
+              const productSlider = document.getElementById("product-slider");
+              productSlider.style.display = "block";
 
+              for (const product of found_products) {
+                const productElement = document.createElement("div");
+                productElement.textContent = `Name: ${product.name}, Group: ${product.group}, Image: ${product.image}`;
+                productSlider.appendChild(productElement);
+              }``
+            }
 
 
           } catch (error) {
@@ -198,6 +214,9 @@ function send() {
 
     document.getElementById("chat-input").value="";
 
+   
     }
+    
+  
 </script>
 </html>

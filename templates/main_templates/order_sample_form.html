@@ -1,0 +1,59 @@
+{% extends "main_templates/base.html" %}
+{% load static %}
+{% block content %}
+    <h1>Order Form</h1>
+ 
+    <form method="post" action="{% url 'order-sample-form' %}">
+        {% csrf_token %}
+        <h2>Choose Product:</h2>
+        <label for="category">Choose Category:</label>
+        <select id="category" name="category">
+            <option value="">Select a Category</option> 
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="sample_item">Choose Sample Item:</label>
+        <select id="sample_item" name="sample_item">
+            <option value="">Select a Sample Product</option>
+            {% for product_name in sample_product_names %}
+            <option value="{{ product_name }}">{{ product_name }}</option>
+            {% endfor %}
+     
+        </select>
+
+        <h2>Delivery Method:</h2>
+        <input type="radio" id="pick_up" name="delivery_method" value="Pick Up in Office">
+        <label for="pick_up">Pick Up in Office: 143-28 41st Avenue, Suite M1, Flushing, New York, NY 11355</label><br>
+
+        <input type="radio" id="home_delivery" name="delivery_method" value="Home Delivery">
+        <label for="home_delivery">Home Delivery</label><br>
+
+        <div id="shipping_address_container">
+            <h4>Enter Shipping Address:</h4>
+            <label for="shipping_address">Shipping Address:</label>
+            <textarea id="shipping_address" name="shipping_address"></textarea>
+        </div>
+        
+
+        <h2>Enter Patient Information:</h2>
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required><br>
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required><br>
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select><br>
+
+        <label for="mobile_phone">Mobile Phone:</label>
+        <input type="tel" id="mobile_phone" name="mobile_phone" required><br>
+
+        <input type="submit" value="Submit">
+    </form>
+    
+{% endblock %}
