@@ -7,9 +7,6 @@ $(function() {
       return false;
     }
     
-    
-  })
-  
   
   $(document).delegate(".chat-btn", "click", function() {
     var value = $(this).attr("chat-value");
