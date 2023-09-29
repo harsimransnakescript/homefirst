@@ -3,7 +3,7 @@ from django.http import JsonResponse, StreamingHttpResponse
 import openai
 from django.views import View
 
-from main_app.models import ProductsModel
+from main_app.models import ProductsModel,Categories,SampleProductsModel
 from django.conf import settings
 import json
 from django.db.models import Q
@@ -11,7 +11,7 @@ from django.db.models import Q
 openai.api_key = settings.OPENAI_API_KEY 
 
 def index(request):
-    return render(request,'templates/index2.html')
+    return render(request,'templates/index.html')
 
 class StreamGeneratorView(View):
 
@@ -136,6 +136,28 @@ class StreamGeneratorView(View):
         #return Response({},status.HTTP_200_OK)
         response =  StreamingHttpResponse(name,status=200, content_type='text/event-stream')
         return response
+
+
+
+
+def Load_Categories_SampleProducts(request):
+     # Assuming Categories and SampleProductsModel are Django models
+    categories = Categories.objects.values('id', 'name')
+    products = SampleProductsModel.objects.values('id', 'name')
+
+    # Convert the QuerySets to lists of dictionaries
+    categories_list = list(categories)
+    products_list = list(products)
+
+    # Create a dictionary to hold the data
+    data = {
+        "categories": categories_list,
+        "products": products_list,
+    }
+
+    # Return the data as JSON response
+    return JsonResponse(data)
+
 
 
 

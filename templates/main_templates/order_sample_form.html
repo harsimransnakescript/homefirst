@@ -18,7 +18,7 @@
         <select id="sample_item" name="sample_item">
             <option value="">Select a Sample Product</option>
             {% for product_name in sample_product_names %}
-            <option value="{{ product_name }}">{{ product_name }}</option>
+            <option value="{{ product_name.id }}">{{ product_name.name }}</option>
             {% endfor %}
      
         </select>

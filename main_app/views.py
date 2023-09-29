@@ -3,13 +3,12 @@ from .models import *
 from django.contrib.auth.decorators import login_required
 import csv
 import pandas as pd
-from django.http import HttpResponse,HttpResponseBadRequest
+from django.http import HttpResponse
 import os
 import openpyxl
 from openpyxl_image_loader import SheetImageLoader
 from django.conf import settings
 import requests
-import asana
 from dotenv import load_dotenv
 import os
 load_dotenv()
@@ -110,7 +109,7 @@ def products(request):
 def order_sample(request):
 
     categories = Categories.objects.all()
-    sample_product_names = SampleProductsModel.objects.values_list('name', flat=True)
+    sample_product_names = SampleProductsModel.objects.all()
     
     if request.method=='POST':
         category = request.POST.get("category")
@@ -121,14 +120,15 @@ def order_sample(request):
         last_name = request.POST.get("last_name")
         gender = request.POST.get("gender")
         mobile_phone = request.POST.get("mobile_phone")
-        
+        print("-=---=-=",sample_item)
         try:
             category = Categories.objects.get(id=category)
         except Categories.DoesNotExist:
             category = None
 
         try:
-            sample_item = SampleProductsModel.objects.get(name=sample_item)
+            sample_item = SampleProductsModel.objects.get(id=sample_item)
+            print(sample_item)
         except SampleProductsModel.DoesNotExist:
             sample_item = None
             
@@ -168,3 +168,46 @@ def order_sample(request):
 
     return render(request, 'main_templates/order_sample_form.html', {'categories': categories, 'sample_product_names': sample_product_names,})
 
+def create_authorization_status(request):
+
+    authorization_statuses = AuthorizationStatus.objects.all()
+    
+    if request.method == 'POST':
+        task = request.FILES.get('task')
+        starting_date = request.POST.get('starting_date')
+        ending_date = request.POST.get('ending_date')
+        status = request.POST.get('status')
+        
+
+        starting_date = timezone.datetime.strptime(starting_date, "%Y-%m-%d").date()
+        ending_date = timezone.datetime.strptime(ending_date, "%Y-%m-%d").date()
+       
+        authorization = AuthorizationStatus.objects.create(
+            task=task,
+            starting_date=starting_date,
+            ending_date=ending_date,
+            status=status
+        )
+        authorization.save()
+                  
+        task = f"task :{task},"\
+            f"starting_date: {starting_date},"\
+            f"ending_date: {ending_date},"\
+            f"status: {status}"
+        
+        url = "https://app.asana.com/api/1.0/tasks?opt_fields=&opt_pretty=true"
+        payload = { "data": {
+                          
+                                "projects": ["1205600469702396"],
+                                "name": str(task),
+                            
+                            } }
+        headers = {
+                        "accept": "application/json",
+                        "content-type": "application/json",
+                        "authorization": os.environ.get('ASANA_TOKEN')
+                    }
+        
+        response = requests.post(url, json=payload, headers=headers)
+    
+    return render(request, 'main_templates/authorization_status.html', {'authorization_statuses': authorization_statuses})
