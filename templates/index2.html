@@ -11,10 +11,10 @@
 <body>
 </body>
 <div>
-  <div id="chat-circle" class="btn btn-raised">
+  <div id="chat-circle" style="display:none;" class="btn btn-raised">
     <img src="static/images/logo-img.png" class="img-fluid">
   </div>
-  <div class="chat-box">
+  <div class="chat-box" style="display:block;">
     <div class="chat-box-header">
       <div class="chat_box_header_logo d-flex align-items-center">
         <a href="">
@@ -92,7 +92,6 @@
 <script src="static/js/jquery.min.js"></script>
 
 
-<script src="static/js/bootstrap.min 2.js"></script>
 <script src="static/js/script.js"></script>
 </body>
 
@@ -100,6 +99,15 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 <script>
+
+  
+  
+  function createSlide(item) {
+    return `<div class="slider-item">
+              <img src="${item.image_url}" alt="${item.name}">
+              <p>${item.name}</p>
+            </div>`;
+  }
 function send() {
   var csrfToken = "{{ csrf_token }}";
     var input = document.getElementById("chat-input").value;
@@ -114,10 +122,11 @@ function send() {
         const Allmessagedivs = display.querySelectorAll("div")
         for (let i = 0; i < Allmessagedivs.length; i++) {
           const messagediv = Allmessagedivs[i];
-          if(messagediv.classList.contains("user")){
-            oldmessages.push({role:"user",content:messagediv.innerHTML})
-          }else if(messagediv.classList.contains("system")){
-            oldmessages.push({role:"system",content:messagediv.innerHTML})
+          if(messagediv.classList.contains("self"))
+          {
+            oldmessages.push({role:"user",content:messagediv.querySelector('.cm-msg-text > h3').innerHTML})
+          }else if(messagediv.classList.contains("user")){
+            oldmessages.push({role:"system",content:messagediv.querySelector('.cm-msg-text').innerHTML})
           }
         }
         return oldmessages
@@ -158,8 +167,27 @@ function send() {
 
                 // Decode the byte data to text
                 const decodedText = textDecoder.decode(value);
-          
-                messageelm.append((decodedText));
+                console.log(decodedText)
+                if(isJSON(decodedText)){
+                  const wordData = JSON.parse(decodedText)
+                  if(wordData.type==='products'){
+                    myfinaldata= wordData["data"]["products"]
+                    myfinaldata.data.forEach((item) => {
+                      const slide = createSlide(item);
+                      slider.append(slide);
+                    });
+                  
+                    slider.slick({
+                      slidesToShow: 1,
+                      slidesToScroll: 1,
+                      autoplay: true,
+                      autoplaySpeed: 2000, 
+                    });
+                  }
+                }else{
+                  messageelm.append(decodedText);
+                }
+                
 
               }
             };
@@ -216,7 +244,14 @@ function send() {
 
    
     }
-    
-  
+    function isJSON(str) {
+      try {
+        JSON.parse(str);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+   
 </script>
 </html>

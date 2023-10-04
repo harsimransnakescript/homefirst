@@ -50,6 +50,9 @@
       <div id="formContainer">
         <button class="btn btn-primary" onclick="appendFormToChatLogs()">Order Sample</button>
       </div>
+      <div id="formContainer">
+        <button class="btn btn-primary" onclick="openform()">Authorization Status</button>
+      </div>
       
       <div class="chat-logs">
 {% csrf_token %}
@@ -186,22 +189,8 @@ function send() {
             elm.appendChild(answerDiv);
 
             result=display.appendChild(elm);
-            console.log("---",result)
             await processData(reader,cmMsgTextDiv);
            
-            // Check the content inside cmMsgTextDiv for the "Found products:" message
-            const cmMsgTextContent = cmMsgTextDiv.textContent;
-            if (cmMsgTextContent.includes("Found products:")) {
-              const productSlider = document.getElementById("product-slider");
-              productSlider.style.display = "block";
-
-              for (const product of found_products) {
-                const productElement = document.createElement("div");
-                productElement.textContent = `Name: ${product.name}, Group: ${product.group}, Image: ${product.image}`;
-                productSlider.appendChild(productElement);
-              }``
-            }
-
 
           } catch (error) {
             console.error('An error occurred:', error);
@@ -225,98 +214,187 @@ function send() {
   
 </script>
 <script>
+  function createSampleOrderForm(response) {
+    var chatLogs = document.querySelector('.chat-logs');
+    var newDiv = document.createElement("div");
+    newDiv.className = "chat-message user";
+    
+    var formHTML = 
+    `<form id="sampleOrderForm" method="post" action="{% url 'order-sample-form' %}">
+      {% csrf_token %}
+        <h2>Choose Product:</h2>
+        <label for="category">Choose Category:</label>
+        <select id="category" name="category">
+            <option value="">Select a Category</option> 
+            `;
+          
+            for (var i = 0; i < response.categories.length; i++) {
+                formHTML += `
+                    <option value="${response.categories[i].id}">${response.categories[i].name}</option>
+                `;
+            }
+            
+            formHTML += `
+                    </select>
+        
+        <label for="sample_item">Choose Sample Item:</label>
+        <select id="sample_item" name="sample_item">
+            <option value="">Select a Sample Product</option>
+            `;
+
+            for (var j = 0; j < response.products.length; j++) {
+                formHTML += `
+                    <option value="${response.products[j].id}">${response.products[j].name}</option>
+                `;
+            }
+
+            formHTML += `
+                    </select>
+
+        <h2>Delivery Method:</h2>
+        <input type="radio" id="pick_up" name="delivery_method" value="Pick Up in Office">
+        <label for="pick_up">Pick Up in Office</label><br>
+
+        <input type="radio" id="home_delivery" name="delivery_method" value="Home Delivery">
+        <label for="home_delivery">Home Delivery</label><br>
+
+        <div id="shipping_address_container">
+            <h4>Enter Shipping Address:</h4>
+            <label for="shipping_address">Shipping Address:</label>
+            <textarea id="shipping_address" name="shipping_address"></textarea>
+        </div>
+        
+
+        <h2>Enter Patient Information:</h2>
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required><br>
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required><br>
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select><br>
+
+        <label for="mobile_phone">Mobile Phone:</label>
+        <input type="tel" id="mobile_phone" name="mobile_phone" required><br>
+
+        <input type="submit" value="Submit">
+    </form>
+    <div id="thankYouMessage" style="display: none;">Thank you for your submission!</div>
+  `;
+        
+
+    // Set the innerHTML of the newDiv to the formHTML
+    newDiv.innerHTML = formHTML;
+
+    // Append the newDiv to chatLogs
+    chatLogs.appendChild(newDiv);
+}
 
   function appendFormToChatLogs() {
-      var chatLogs = document.querySelector('.chat-logs');
-
-      var newDiv = document.createElement("div");
-      newDiv.className = "chat-message user";
       
       $.ajax({
         url: "{% url 'load_categories_sampleproducts' %}",
         type: "GET", 
         success: function(response) {
           console.log(response);
-       
+          createSampleOrderForm(response);
+          // Add an event listener for form submission
+          document.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
 
-        var formHTML = `
-      <form method="post" action="{% url 'order-sample-form' %}">
-        {% csrf_token %}
-          <h2>Choose Product:</h2>
-          <label for="category">Choose Category:</label>
-          <select id="category" name="category">
-              <option value="">Select a Category</option> 
-              `;
-            
-              for (var i = 0; i < response.categories.length; i++) {
-                  formHTML += `
-                      <option value="${response.categories[i].id}">${response.categories[i].name}</option>
-                  `;
-              }
-              
-              formHTML += `
-                      </select>
-          
-          <label for="sample_item">Choose Sample Item:</label>
-          <select id="sample_item" name="sample_item">
-              <option value="">Select a Sample Product</option>
-              `;
+            // Serialize the form data
+            var formData = new FormData(event.target);
 
-              for (var j = 0; j < response.products.length; j++) {
-                  formHTML += `
-                      <option value="${response.products[j].id}">${response.products[j].name}</option>
-                  `;
-              }
-  
-              formHTML += `
-                      </select>
-  
-          <h2>Delivery Method:</h2>
-          <input type="radio" id="pick_up" name="delivery_method" value="Pick Up in Office">
-          <label for="pick_up">Pick Up in Office: 143-28 41st Avenue, Suite M1, Flushing, New York, NY 11355</label><br>
-  
-          <input type="radio" id="home_delivery" name="delivery_method" value="Home Delivery">
-          <label for="home_delivery">Home Delivery</label><br>
-  
-          <div id="shipping_address_container">
-              <h4>Enter Shipping Address:</h4>
-              <label for="shipping_address">Shipping Address:</label>
-              <textarea id="shipping_address" name="shipping_address"></textarea>
-          </div>
-          
-  
-          <h2>Enter Patient Information:</h2>
-  
-          <label for="first_name">First Name:</label>
-          <input type="text" id="first_name" name="first_name" required><br>
-          <label for="last_name">Last Name:</label>
-          <input type="text" id="last_name" name="last_name" required><br>
-          <label for="gender">Gender:</label>
-          <select id="gender" name="gender">
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-          </select><br>
-  
-          <label for="mobile_phone">Mobile Phone:</label>
-          <input type="tel" id="mobile_phone" name="mobile_phone" required><br>
-  
-          <input type="submit" value="Submit">
-      </form>
-    `;
+            // Send the form data using AJAX
+            $.ajax({
+                url: "{% url 'order-sample-form' %}",
+                type: "POST", // Change to POST if your form uses POST
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // Handle the response if needed
+                    console.log("AJAX Success - Response received.");
+                    console.log(response);
 
-   // Set the innerHTML of the newDiv to the formHTML
-   newDiv.innerHTML = formHTML;
-
-   // Append the newDiv to chatLogs
-   chatLogs.appendChild(newDiv);
- },
- error: function(xhr, status, error) {
-   // Handle error
-   console.error("Error retrieving data:", error);
- }
+                    document.getElementById('sampleOrderForm').style.display = 'none';
+                    document.getElementById('thankYouMessage').style.display = 'block';
+                },
+                error: function(xhr, status, error) {
+                    // Handle error
+                    console.error("Error submitting form:", error);
+                }
+            });
+        });
+    },
+    error: function(xhr, status, error) {
+        // Handle error
+        console.error("Error retrieving data:", error);
+    }
 });
 }
 </script>
+       
+{% comment %} <script>
+  function createAuthorizationForm(response) {
+    var chatLogs = document.querySelector('.chat-logs');
+    var newDiv = document.createElement("div");
+    newDiv.className = "chat-message authorization";
+    
+    var formHTML = 
+    `<form id="authorizationForm" method="post" action="{% url 'create_authorization_status' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label for="task">Task:</label>
+      <input type="file" id="task" name="task" required><br>
 
+      <label for="starting_date">Starting Date:</label>
+      <input type="date" id="starting_date" name="starting_date" required><br>
+
+      <label for="ending_date">Ending Date:</label>
+      <input type="date" id="ending_date" name="ending_date" required><br>
+
+      <label for="status">Status:</label>
+      <select id="status" name="status" required>
+          <option value="Active">Active</option>
+          <option value="Expired">Expired</option>
+      </select><br>
+
+      <input type="submit" value="Create Status">
+   </form>`
+   
+    newDiv.innerHTML = formHTML;
+
+    chatLogs.appendChild(newDiv);
+}
+function appendauthform(){
+  
+  var formData = new FormData();
+  formData.append('csrfmiddlewaretoken', '{{ csrf_token }}'); 
+
+  $.ajax({
+    url: "{% url 'create_authorization_status' %}",
+    type: "POST", // Change to POST if your form uses POST
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(response) {
+        // Handle the response if needed
+        console.log("AJAX Success - Response received.");
+        console.log(response);
+        createAuthorizationForm(response);
+    },
+    error: function(xhr, status, error) {
+        // Handle error
+        console.error("Error submitting form:", error);
+    }
+});
+
+
+}
+
+</script> {% endcomment %}
 </html>

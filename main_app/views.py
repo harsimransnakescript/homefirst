@@ -120,7 +120,7 @@ def order_sample(request):
         last_name = request.POST.get("last_name")
         gender = request.POST.get("gender")
         mobile_phone = request.POST.get("mobile_phone")
-        print("-=---=-=",sample_item)
+    
         try:
             category = Categories.objects.get(id=category)
         except Categories.DoesNotExist:

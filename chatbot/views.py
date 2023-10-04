@@ -7,11 +7,12 @@ from main_app.models import ProductsModel,Categories,SampleProductsModel
 from django.conf import settings
 import json
 from django.db.models import Q
+from django.core import serializers
 
 openai.api_key = settings.OPENAI_API_KEY 
 
 def index(request):
-    return render(request,'templates/index.html')
+    return render(request,'templates/index3.html')
 
 class StreamGeneratorView(View):
 
@@ -26,17 +27,31 @@ class StreamGeneratorView(View):
             q_objects |= Q(name__icontains=value) | Q(group__icontains=value)| Q(specifications__icontains=value) | Q(other_info__icontains=value)
             
         found_products = ProductsModel.objects.filter(q_objects)
-
-        productsFound = bool(found_products)
       
         if found_products:
-    
-            response = "Found products:\n"
+            products_data = []
             for product in found_products:
-                response += f"Name: {product.name}, Group: {product.group}, Image: {product.image}\n"
+                product_info = {
+                    "name": product.name,
+                    "image":str(product.image.url) if product.image else '',
+                    "group": product.group,
+                }
+                products_data.append(product_info)
+                
+    
+            response_data = {
+                "productsFound": True,
+                "products": products_data,
+            }
         else:
-            response = "No products found for the given keywords."
-        return response, productsFound 
+            response_data = {
+                "productsFound": False,
+                "message": "No products found",
+            }
+   
+        print("---",response_data)   
+        return response_data
+
         # return parsedJsonData['keywordsArray']
         
     def gpt3_5(self,request, prompt):
@@ -72,9 +87,10 @@ class StreamGeneratorView(View):
                     if "}" in word:
                         WriteJsonConfig = False
                         data = self.write(request, JsonDataString)
-                        yield data
+                        yield json.dumps({"data":data,"type":"products"})
                 else:
-                    yield word
+                    if(word!=''):
+                        yield word
 
         except Exception as e:
             print(e)
@@ -132,7 +148,7 @@ class StreamGeneratorView(View):
         data = json.loads(request.body.decode('utf-8'))
         #get message from request
         message =  data.get('messages', [])
-        name = self.case_manager_chat(request, message)
+        name = self.gpt3_5(request, message)
         #return Response({},status.HTTP_200_OK)
         response =  StreamingHttpResponse(name,status=200, content_type='text/event-stream')
         return response
@@ -141,21 +157,17 @@ class StreamGeneratorView(View):
 
 
 def Load_Categories_SampleProducts(request):
-     # Assuming Categories and SampleProductsModel are Django models
     categories = Categories.objects.values('id', 'name')
     products = SampleProductsModel.objects.values('id', 'name')
 
-    # Convert the QuerySets to lists of dictionaries
     categories_list = list(categories)
     products_list = list(products)
 
-    # Create a dictionary to hold the data
     data = {
         "categories": categories_list,
         "products": products_list,
     }
 
-    # Return the data as JSON response
     return JsonResponse(data)
 
 
