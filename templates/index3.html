@@ -138,6 +138,20 @@
              
             
             </div>
+            <button id="prevBtn" class="previous-btn" style="display:none;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="14" viewBox="0 0 18 14" fill="none">
+                <path d="M1 7H17" stroke="#6097b4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M7 13L1 7L7 1" stroke="#6097b4" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </button>
+            <button id="nextBtn" class="next-btn" style="display:none;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="14" viewBox="0 0 18 14" fill="none">
+                <path d="M17 7H1" stroke="#6097b4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M11 13L17 7L11 1" stroke="#6097b4" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </button>
           </div> 
           <!-- ticket div end here -->
 
@@ -163,29 +177,21 @@
       </div>
     </div>
   </div>
+
   <!-- partial -->
   <script src="static/js/jquery.min.js"></script>
   <script src="static/js/bootstrap.min.js"></script>
   <script src="static/js/script.js"></script>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
 <script>
 
-  
-  
-  function createSlide(item) {
-    return `<div class="slider-item">
-              <img src="${item.image_url}" alt="${item.name}">
-              <p>${item.name}</p>
-            </div>`;
-  }
 function send() {
-  var csrfToken = "{{ csrf_token }}";
+   var csrfToken = "{{ csrf_token }}";
     var input = document.getElementById("chat-input").value;
     var display = document.getElementById("display");
-    var ansBtn7 = document.getElementById("ans-btn7");
     var send = document.getElementById("send");
     var url = "/generate-stream"
     console.log(input);
@@ -205,6 +211,112 @@ function send() {
         return oldmessages
       }
 
+      function sendSelectedProductsToBackend(selectedProducts) {
+      
+        const backendURL = '/generate-stream';
+      
+    
+        const requestData = {
+          selectedProducts: selectedProducts,
+      
+        };
+        console.log("selectedProducts",selectedProducts[0].id)
+        
+    
+        $.ajax({
+          url: backendURL,
+          type: "POST",
+          data: {
+            csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+            "product_id": selectedProducts[0].id,
+          
+          },
+          success: function(response) {
+               
+        // Function to handle streaming data from Django backend
+            async function streamDataFromBackend() {
+              try {
+                const response = await fetch(url, {
+                  method: 'POST',
+                  headers: {
+                    "X-CSRFToken": csrfToken,  // Include the CSRF token in the header
+                    "Content-Type": "application/json",  // Set the content type accordingly
+                },
+                  body:JSON.stringify({messages:[...getoldmessages(),{role:"user",content:input}]})
+                });
+
+                // Check if the response status is OK (HTTP status code 200)
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                // Create a ReadableStream from the response
+                const stream = response.body;
+
+                // Define a function to process the streamed data
+                const processData = async (reader,messageelm) => {
+                  while (true) {
+                    const { done, value } = await reader.read();
+
+                    if (done) {
+                      break; // Exit the loop when the stream ends
+                    }
+
+                    // Process the received data (value) here
+          
+                    const textDecoder = new TextDecoder();
+
+                    // Decode the byte data to text
+                    const decodedText = textDecoder.decode(value);
+                    console.log(decodedText)
+                    
+                    $(".chat-logs")
+                    .stop()
+                    .animate({ scrollTop: $(".chat-logs")[0].scrollHeight }, 1000);
+
+                  }
+                };
+                // Start processing the streamed data
+                const reader = stream.getReader();
+
+
+                const elm = document.createElement("div");
+                elm.id = "cm-msg-2";
+                elm.className = "chat-msg user";
+
+                const answerDiv = document.createElement("div");
+                answerDiv.className = "answer";
+
+                const cmMsgTextDiv = document.createElement("div");
+                cmMsgTextDiv.className = "cm-msg-text";
+
+                answerDiv.appendChild(cmMsgTextDiv);
+                elm.appendChild(answerDiv);
+
+                result=display.appendChild(elm);
+                console.log("---",result)
+                await processData(reader,cmMsgTextDiv);
+              
+
+              } catch (error) {
+                console.error('An error occurred:', error);
+              }
+            }
+
+            // Call the function to start streaming data
+            streamDataFromBackend();
+              
+          },
+          error: function(xhr, status, error) {
+            // Handle error
+            console.error(error);
+          
+          }
+        });
+        }
+         
+         
+      
     // Function to handle streaming data from Django backend
         async function streamDataFromBackend() {
           try {
@@ -249,7 +361,9 @@ function send() {
                         const getItems = document.querySelector('.ticket_outer');
                         const sliderContainer = document.createElement("div");
                         sliderContainer.className = "product-slider";
-                
+
+                        const selectedProducts = [];
+
                         wordData.data.products.forEach((item) => {
                             var ticketInnerElem = document.createElement("div");
                             ticketInnerElem.className = "ticket_inner";
@@ -265,8 +379,20 @@ function send() {
                             productNameElem.className = "product-name";
                             productNameElem.textContent = item.name;
                 
-                            var viewMoreElem = document.createElement("div");
+                            var viewMoreElem = document.createElement("a");
+                            viewMoreElem.textContent = "Select";
                             viewMoreElem.className = "view_more text-center";
+
+                            viewMoreElem.addEventListener("click", function() {
+                              selectedProducts.push(item);
+                              let ProductSelected = true;
+                              console.log("Product selected:", item.name);
+
+                              sendSelectedProductsToBackend(selectedProducts);
+
+                              display.innerHTML += "<div class='chat-msg self'> <div class='cm-msg-text'><h3>" + item.name + "</h3></div></div>";
+                            
+                            });
                 
                             categoryImageElem.appendChild(imgElem);
                 
@@ -281,12 +407,21 @@ function send() {
                 
                     
                         $('.product-slider').slick({
+                          
                             slidesToShow: 1,
                             slidesToScroll: 1,
-                            autoplay: true,
-                            autoplaySpeed: 500
+                        });
+                        $('#prevBtn, #nextBtn').css('display', 'block');
+
+                        $('#prevBtn').on('click', function() {
+                            $('.product-slider').slick('slickPrev');
+                        });
+
+                        $('#nextBtn').on('click', function() {
+                            $('.product-slider').slick('slickNext');
                         });
                     }
+
                 }
                 
                 }else{
@@ -318,20 +453,7 @@ function send() {
             result=display.appendChild(elm);
             console.log("---",result)
             await processData(reader,cmMsgTextDiv);
-           
-            // Check the content inside cmMsgTextDiv for the "Found products:" message
-            const cmMsgTextContent = cmMsgTextDiv.textContent;
-            if (cmMsgTextContent.includes("Found products:")) {
-              const productSlider = document.getElementById("product-slider");
-              productSlider.style.display = "block";
-
-              for (const product of found_products) {
-                const productElement = document.createElement("div");
-                productElement.textContent = `Name: ${product.name}, Group: ${product.group}, Image: ${product.image}`;
-                productSlider.appendChild(productElement);
-              }``
-            }
-
+          
 
           } catch (error) {
             console.error('An error occurred:', error);
@@ -340,8 +462,6 @@ function send() {
 
         // Call the function to start streaming data
         streamDataFromBackend();
-
-
 
 
     //set the user input to the chatbox

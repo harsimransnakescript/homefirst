@@ -1736,3 +1736,31 @@ footer .footer_links .site_links a {
       width: -webkit-fill-available;
     }
   }
+
+
+  .img-fluid {
+    max-width: 100%; /* Ensure the image doesn't exceed its container */
+    height: auto; /* Maintain the image's aspect ratio */
+  }
+
+
+  .product-name {
+    font-size: 16px; /* Adjust the font size as needed */
+    font-weight: bold; /* Make the text bold if desired */
+    margin-bottom: 10px; /* Add some spacing below the product name */
+  }
+
+
+  .view_more {
+    background-color: #007bff; /* Change the background color as needed */
+    color: #fff; /* Text color */
+    padding: 8px 16px; /* Add padding for better appearance */
+    text-decoration: none; /* Remove underline from the anchor tag */
+    border-radius: 4px; /* Add rounded corners if desired */
+    display: block; /* Make it a block element for padding */
+  }
+
+
+  .text-center {
+    text-align: center; /* Center-align the content */
+  }
