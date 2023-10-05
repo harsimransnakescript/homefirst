@@ -1,5 +1,6 @@
 from django.db import models
 from auth_app.models import User
+from django.utils import timezone
 
 # Create your models here.
 class ProductsModel(models.Model):
@@ -22,6 +23,9 @@ class SampleProductsModel(models.Model):
     specifications=models.TextField(null=True,blank=True)
     other_info=models.TextField(null=True,blank=True)
     price=models.CharField(max_length=10000,null=True,blank=True)
+    
+    def __str__(self):
+        return self.name
 
 class Categories(models.Model):
     name = models.CharField(max_length=100)
@@ -31,47 +35,40 @@ class Categories(models.Model):
     def __str__(self):
         return self.name
     
+class OrderSample(models.Model):
+    category = models.ForeignKey(Categories, on_delete=models.CASCADE)
+    sample_item =  models.ForeignKey(SampleProductsModel, on_delete=models.CASCADE)
+    delivery_method = models.CharField(max_length=255, choices=[
+        ('Pick Up in Office', 'Pick Up in Office'),
+        ('Home Delivery', 'Home Delivery'),
+    ])
+    shipping_address = models.TextField(null=True,blank=True)
+    last_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=255)
+    gender = models.CharField(max_length=10, choices=[
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
+    ])
+    mobile_phone = models.CharField(max_length=20)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Order for {self.first_name} {self.last_name}"
     
-class Requester(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Link to User model for authentication
-    phone_number = models.CharField(max_length=15)
+    
+class AuthorizationStatus(models.Model):
+    task = models.FileField(upload_to="task/")
+    starting_date = models.DateField()
+    ending_date = models.DateField()
+    status = models.CharField(max_length=10, choices=[('Active', 'Active'), ('Expired', 'Expired')])
 
-    def __str__(self):
-        return self.user.username
+    def save(self, *args, **kwargs):
+        if self.ending_date < timezone.now().date() and self.status == 'Active':
+            self.status = 'Expired'
+        super().save(*args, **kwargs)
 
-class Sample(models.Model):
-    name = models.CharField(max_length=255)
-    available_quantity = models.PositiveIntegerField()
-    manufacturer = models.CharField(max_length=255)
-    product_code = models.CharField(max_length=20, unique=True)
+    
 
-    def __str__(self):
-        return self.name
 
-class SampleRequest(models.Model):
-    requester = models.ForeignKey(Requester, on_delete=models.CASCADE)
-    sample = models.ForeignKey(Sample, on_delete=models.CASCADE)
-    requested_date = models.DateTimeField(auto_now_add=True)
-    status_choices = (
-        ('Pending', 'Pending'),
-        ('Approved', 'Approved'),
-        ('Shipped', 'Shipped'),
-        ('Delivered', 'Delivered'),
-        ('Rejected', 'Rejected'),
-    )
-    status = models.CharField(max_length=20, choices=status_choices)
-    quantity = models.PositiveIntegerField()
-    shipping_address = models.TextField()
-    special_instructions = models.TextField(blank=True, null=True)
 
-    def __str__(self):
-        return f"Sample Request #{self.pk}"
-
-class SampleRequestHistory(models.Model):
-    sample_request = models.ForeignKey(SampleRequest, on_delete=models.CASCADE)
-    status = models.CharField(max_length=20, choices=SampleRequest.status_choices)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-
-    def __str__(self):
-        return f"{self.sample_request} - {self.status}"

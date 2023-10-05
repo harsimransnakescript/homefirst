@@ -1,24 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Authorization Status</title>
+    <meta charset="UTF-8">
+    <title>Create Authorization Status</title>
 </head>
 <body>
-    <h1>Authorization Status</h1>
+    <h1>Create Authorization Status</h1>
+    <form method="post" action="{% url 'create_authorization_status' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="task">Task:</label>
+        <input type="file" id="task" name="task" required><br>
+
+        <label for="starting_date">Starting Date:</label>
+        <input type="date" id="starting_date" name="starting_date" required><br>
+
+        <label for="ending_date">Ending Date:</label>
+        <input type="date" id="ending_date" name="ending_date" required><br>
+
+        <label for="status">Status:</label>
+        <select id="status" name="status" required>
+            <option value="Active">Active</option>
+            <option value="Expired">Expired</option>
+        </select><br>
+
+        <input onclick="create_authorization_status()" type="submit" value="Create Status">
+    </form>
+    <hr>
+    <h3>Authorization Status</h3>
     <table>
         <thead>
             <tr>
-                <th>Sample</th>
+                <th>Task</th>
+                <th>Starting Date</th>
+                <th>Ending Date</th>
                 <th>Status</th>
-                <th>Requested Date</th>
             </tr>
         </thead>
         <tbody>
-            {% for sample_request in sample_requests %}
+            {% for authorization in authorization_statuses %}
                 <tr>
-                    <td>{{ sample_request.sample.name }}</td>
-                    <td>{{ sample_request.status }}</td>
-                    <td>{{ sample_request.requested_date }}</td>
+                    <td>{{ authorization.task }}</td>
+                    <td>{{ authorization.starting_date }}</td>
+                    <td>{{ authorization.ending_date }}</td>
+                    <td>{{ authorization.status }}</td>
                 </tr>
             {% endfor %}
         </tbody>

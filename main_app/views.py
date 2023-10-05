@@ -3,11 +3,15 @@ from .models import *
 from django.contrib.auth.decorators import login_required
 import csv
 import pandas as pd
-from django.http import HttpResponse,HttpResponseBadRequest
+from django.http import HttpResponse
 import os
 import openpyxl
 from openpyxl_image_loader import SheetImageLoader
 from django.conf import settings
+import requests
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 # Create your views here.
 @login_required
@@ -101,49 +105,109 @@ def products(request):
     return render(request, "main_templates/products.html", {"categories": categories, "products": products})
 
 
-
-# View to display the sample request form
 @login_required
 def order_sample(request):
-    if request.method == 'POST':
-        # Get data from the POST request
-        sample_id = request.POST.get('sample_id')
-        quantity = request.POST.get('quantity')
-        shipping_address = request.POST.get('shipping_address')
-        special_instructions = request.POST.get('special_instructions')
+
+    categories = Categories.objects.all()
+    sample_product_names = SampleProductsModel.objects.all()
+    
+    if request.method=='POST':
+        category = request.POST.get("category")
+        sample_item = request.POST.get("sample_item")
+        delivery_method = request.POST.get("delivery_method")
+        shipping_address = request.POST.get("shipping_address")
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        gender = request.POST.get("gender")
+        mobile_phone = request.POST.get("mobile_phone")
+    
+        try:
+            category = Categories.objects.get(id=category)
+        except Categories.DoesNotExist:
+            category = None
 
         try:
-            sample = Sample.objects.get(pk=sample_id)
-        except Sample.DoesNotExist:
-            return HttpResponseBadRequest("Sample not found")
-
-        # Create a new sample request
-        sample_request = SampleRequest(
-            requester=request.user.requester,  # Assuming you have user authentication
-            sample=sample,
-            quantity=quantity,
+            sample_item = SampleProductsModel.objects.get(id=sample_item)
+            print(sample_item)
+        except SampleProductsModel.DoesNotExist:
+            sample_item = None
+            
+        order = OrderSample(
+            category=category, 
+            sample_item=sample_item,
+            delivery_method=delivery_method,
             shipping_address=shipping_address,
-            special_instructions=special_instructions,
-            status='Pending'  # You can set the initial status as needed
+            first_name=first_name,
+            last_name=last_name,
+            gender=gender,
+            mobile_phone=mobile_phone
         )
-        sample_request.save()
+        order.save()
+        task = f"Order: {category} - {sample_item}, " \
+           f"Delivery Method: {delivery_method}, " \
+           f"Shipping Address: {shipping_address}, " \
+           f"First Name: {first_name}, " \
+           f"Last Name: {last_name}, " \
+           f"Gender: {gender}, " \
+           f"Mobile Phone: {mobile_phone}"
+        
+        url = "https://app.asana.com/api/1.0/tasks?opt_fields=&opt_pretty=true"
+        payload = { "data": {
+                          
+                                "projects": ["1205600469702396"],
+                                "name": str(task),
+                            
+                            } }
+        headers = {
+                        "accept": "application/json",
+                        "content-type": "application/json",
+                        "authorization": os.environ.get('ASANA_TOKEN')
+                    }
+        
+        response = requests.post(url, json=payload, headers=headers)
 
-        return redirect('/')  # Redirect to a success page
+    return render(request, 'main_templates/order_sample_form.html', {'categories': categories, 'sample_product_names': sample_product_names,})
 
-    # Retrieve a list of available samples to display in the form
-    samples = Sample.objects.all()
+def create_authorization_status(request):
+
+    authorization_statuses = AuthorizationStatus.objects.all()
     
-    return render(request, 'main_templates/order_sample.html', {'samples': samples})
+    if request.method == 'POST':
+        task = request.FILES.get('task')
+        starting_date = request.POST.get('starting_date')
+        ending_date = request.POST.get('ending_date')
+        status = request.POST.get('status')
+        
 
-# View to list sample request statuses
-@login_required
-def authorization_status(request):
-    sample_requests = SampleRequest.objects.filter(requester=request.user.requester)  # Filter by the current requester
-    return render(request, 'main_templates/authorization_status.html', {'sample_requests': sample_requests})
-
-# View to display sample request success page
-@login_required
-def sample_request_success(request):
-    return render(request, 'main_templates/sample_request_success.html')
-
-
+        starting_date = timezone.datetime.strptime(starting_date, "%Y-%m-%d").date()
+        ending_date = timezone.datetime.strptime(ending_date, "%Y-%m-%d").date()
+       
+        authorization = AuthorizationStatus.objects.create(
+            task=task,
+            starting_date=starting_date,
+            ending_date=ending_date,
+            status=status
+        )
+        authorization.save()
+                  
+        task = f"task :{task},"\
+            f"starting_date: {starting_date},"\
+            f"ending_date: {ending_date},"\
+            f"status: {status}"
+        
+        url = "https://app.asana.com/api/1.0/tasks?opt_fields=&opt_pretty=true"
+        payload = { "data": {
+                          
+                                "projects": ["1205600469702396"],
+                                "name": str(task),
+                            
+                            } }
+        headers = {
+                        "accept": "application/json",
+                        "content-type": "application/json",
+                        "authorization": os.environ.get('ASANA_TOKEN')
+                    }
+        
+        response = requests.post(url, json=payload, headers=headers)
+    
+    return render(request, 'main_templates/authorization_status.html', {'authorization_statuses': authorization_statuses})
