@@ -53,7 +53,7 @@ class StreamGeneratorView(View):
 
         # return parsedJsonData['keywordsArray']
      
-    def gpt3_5(self,request, prompt,selected_product):
+    def gpt3_5(self,request, prompt,productSelect):
         try:
             Instruction = {"role": "system", "content": """
     !IMPORTANT :1. You are a patient care expert website named Homefirst DME!, Your replies and suggestions are short and friendly, You search for all types of homecare medical products by replying in the mentioned way only\n
@@ -68,7 +68,7 @@ class StreamGeneratorView(View):
                            """}
            
 
-            if selected_product:
+            if productSelect:
                 conversation = [Instruction2]+prompt
             else:
                 conversation = [Instruction]+prompt
@@ -105,20 +105,18 @@ class StreamGeneratorView(View):
             return JsonResponse({"result": result})
         
     def post(self,request):
-        selected_product = request.POST.get('product_id')
-
-        if selected_product:
-                name = self.gpt3_5(request, [], selected_product)
-                print("=====",name)
-                response = StreamingHttpResponse(name, status=200, content_type='text/event-stream')
-                return response
-    
-        else:
- 
+      
             data = json.loads(request.body.decode('utf-8'))
+            print("data",data)
             #get message from request
             message =  data.get('messages', [])
-            name = self.gpt3_5(request, message, None)
+            print("message",message)
+            productSelect = data.get('productSelect', False)
+            if productSelect:
+                name = self.gpt3_5(request, [], productSelect)
+            else:
+                name = self.gpt3_5(request, message, None)
+          
             #return Response({},status.HTTP_200_OK)
             response =  StreamingHttpResponse(name,status=200, content_type='text/event-stream')
             return response

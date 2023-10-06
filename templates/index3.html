@@ -160,82 +160,7 @@
   <script src="http://code.jquery.com/jquery-latest.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-<script>
-  
-  async function sendSelectedProductsToBackend(selectedProducts) {
-    var csrfToken = "{{ csrf_token }}";
-    var display = document.getElementById("display");
-      
-    const backendURL = '/generate-stream';
-  
 
-    const requestData = {
-      selectedProducts: selectedProducts,
-  
-    };
-    console.log("selectedProducts",selectedProducts[0].id)
-    
-      try {
-      const response = await fetch(backendURL, {
-        method: 'POST',
-        headers: {
-          "X-CSRFToken": csrfToken,  // Include the CSRF token in the header
-          "Content-Type": "application/json",  // Set the content type accordingly
-        },
-        body:JSON.stringify({messages:[{role:"user",content:"what is python"}],product_id:selectedProducts[0].id})
-      });
-      const stream = response.body;
-
-        // Define a function to process the streamed data
-        const processData = async (reader,messageelm) => {
-          while (true) {
-            const { done, value } = await reader.read();
-
-            if (done) {
-              break; // Exit the loop when the stream ends
-            }
-
-            // Process the received data (value) here
-  
-            const textDecoder = new TextDecoder();
-
-            // Decode the byte data to text
-            const decodedText = textDecoder.decode(value);
-            console.log(decodedText)
-        
-            $(".chat-logs")
-            .stop()
-            .animate({ scrollTop: $(".chat-logs")[0].scrollHeight }, 1000);
-
-          }
-        };
-        // Start processing the streamed data
-        const reader1 = stream.getReader();
-
-
-        const elm = document.createElement("div");
-        elm.id = "cm-msg-2";
-        elm.className = "chat-msg user";
-
-        const answerDiv = document.createElement("div");
-        answerDiv.className = "answer";
-
-        const cmMsgTextDiv = document.createElement("div");
-        cmMsgTextDiv.className = "cm-msg-text";
-
-        answerDiv.appendChild(cmMsgTextDiv);
-        elm.appendChild(answerDiv);
-
-        result=display.appendChild(elm);
-        console.log("---",result)
-        await processData(reader1,cmMsgTextDiv);
-      
-
-      } catch (error) {
-        console.error('An error occurred:', error);
-      }
-    }
-</script>
 
 <script>
 
@@ -270,13 +195,22 @@ function send() {
     // Function to handle streaming data from Django backend
         async function streamDataFromBackend() {
           try {
+           
+            const requestBody = {
+              messages: [...getoldmessages(), { role: "user", content: input }]
+            };
+  
+            if (ProductSelected) {
+                requestBody.productSelect = true;
+            }
+    
             const response = await fetch(url, {
               method: 'POST',
               headers: {
                 "X-CSRFToken": csrfToken,  // Include the CSRF token in the header
                 "Content-Type": "application/json",  // Set the content type accordingly
             },
-              body:JSON.stringify({messages:[...getoldmessages(),{role:"user",content:input}]})
+              body:JSON.stringify(requestBody)
             });
 
             // Check if the response status is OK (HTTP status code 200)
@@ -317,7 +251,6 @@ function send() {
                         const sliderContainer = document.createElement("div");
                         sliderContainer.className = "product-slider";
 
-                        const selectedProducts = [];
 
                         wordData.data.products.forEach((item) => {
                             const ticketInnerElem = document.createElement("div");
@@ -339,13 +272,13 @@ function send() {
                             viewMoreElem.className = "view_more text-center";
 
                             viewMoreElem.addEventListener("click", function() {
-                              selectedProducts.push(item);
+                             
                               let ProductSelected = true;
                               console.log("Product selected:", item.name);
-
-                              sendSelectedProductsToBackend(selectedProducts);
-                              display.innerHTML += "<div class='chat-msg self'> <div class='cm-msg-text'><h3>" + item.name + "</h3></div></div>";
-                            
+                              var fullVariable = "I have selected " + item.name
+                              $("#chat-input").val(fullVariable);
+ 
+                              $("#chat-submit").click();
 
                             });
                 
