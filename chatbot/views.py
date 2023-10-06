@@ -64,9 +64,7 @@ class StreamGeneratorView(View):
                   
             """}
             Instruction2 = {"role":"system","content":"""
-            !IMPORTANT :1. product is selected ask now patient information like first name.
-                        2. Ask about home delivery or office delivery. 
-                        3. Ask shipping address of product.
+            !IMPORTANT :1. Product is selected ask now patient information.
                            """}
            
 
