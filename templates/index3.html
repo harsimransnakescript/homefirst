@@ -190,28 +190,23 @@ function send() {
       
       
          
-         
+    let ProductSelected = false; 
       
     // Function to handle streaming data from Django backend
         async function streamDataFromBackend() {
           try {
-           
-            const requestBody = {
-              messages: [...getoldmessages(), { role: "user", content: input }]
-            };
-  
-            if (ProductSelected) {
-                requestBody.productSelect = true;
-            }
-    
             const response = await fetch(url, {
               method: 'POST',
               headers: {
                 "X-CSRFToken": csrfToken,  // Include the CSRF token in the header
                 "Content-Type": "application/json",  // Set the content type accordingly
             },
-              body:JSON.stringify(requestBody)
+              body:JSON.stringify({
+                "messages":[...getoldmessages(),{role:"user",content:input}],
+                "ProductSelected": ProductSelected
+              })
             });
+
 
             // Check if the response status is OK (HTTP status code 200)
             if (!response.ok) {
@@ -273,12 +268,14 @@ function send() {
 
                             viewMoreElem.addEventListener("click", function() {
                              
-                              let ProductSelected = true;
+                              ProductSelected = true;
+                              console.log("=====",ProductSelected)
                               console.log("Product selected:", item.name);
                               var fullVariable = "I have selected " + item.name
                               $("#chat-input").val(fullVariable);
- 
+                              sendRequestWithProductSelected();
                               $("#chat-submit").click();
+                             
 
                             });
                 
@@ -375,9 +372,63 @@ function send() {
           }
         }
 
-        // Call the function to start streaming data
-        streamDataFromBackend();
 
+   
+      async function sendRequestWithProductSelected() {
+        try {
+          
+          await new Promise((resolve) => setTimeout(resolve, 100));
+      
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              "X-CSRFToken": csrfToken,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              "messages": [...getoldmessages(), { role: "user", content: input }],
+              "ProductSelected": ProductSelected
+            })
+          });
+      
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+      
+          const stream = response.body;
+      
+      
+          const processData = async (reader, messageelm) => {
+            while (true) {
+              const { done, value } = await reader.read();
+      
+              if (done) {
+                break;
+              }
+      
+
+              const textDecoder = new TextDecoder();
+      
+
+              const decodedText = textDecoder.decode(value);
+              console.log(decodedText);
+      
+         
+            }
+          };
+      
+          const reader = stream.getReader();
+      
+  
+        } catch (error) {
+          console.error('An error occurred:', error);
+        }
+    }
+    
+    
+
+    // Call the function to start streaming data
+    streamDataFromBackend();
 
     //set the user input to the chatbox
     display.innerHTML=display.innerHTML+"<div class='chat-msg self'> <div class='cm-msg-text'><h3>"+input+"</h3></div></div>";
@@ -386,6 +437,9 @@ function send() {
 
    
     }
+
+    
+
     function isJSON(str) {
       try {
         JSON.parse(str);

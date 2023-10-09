@@ -7,7 +7,6 @@ from main_app.models import ProductsModel,Categories,SampleProductsModel
 from django.conf import settings
 import json
 from django.db.models import Q
-from django.core import serializers
 
 openai.api_key = settings.OPENAI_API_KEY 
 
@@ -50,10 +49,16 @@ class StreamGeneratorView(View):
             }
    
         return response_data
-
-        # return parsedJsonData['keywordsArray']
+    
+    
+        
+    def order(self,request,rawjsonData):    
+        parsedJsonData = json.loads(rawjsonData.lstrip('$$').strip())
+        keywords_array = parsedJsonData.get('keywordsArray', [])
+        print(keywords_array)
+        return keywords_array
      
-    def gpt3_5(self,request, prompt,productSelect):
+    def gpt3_5(self,request, prompt,ProductSelected):
         try:
             Instruction = {"role": "system", "content": """
     !IMPORTANT :1. You are a patient care expert website named Homefirst DME!, Your replies and suggestions are short and friendly, You search for all types of homecare medical products by replying in the mentioned way only\n
@@ -61,18 +66,13 @@ class StreamGeneratorView(View):
                 3. When user asks to find or search for medical products Reply $$ { "keywordsArray":[ "feature1","feature1abbrevation","feature1synonym","feature2","feature2abbrevation","feature2synonym"]} , features should be of one word only, no camel case allowed, feature can not have two or more words or "-" inside it\n
                 4. Convert and include the products feature with multiple features with synonyms, short forms, variations and abbreviations as many as possible repeated and send inside the keywordArray\n
                 5. Do not mention i need keywords to search instead ask for features or other requirements in products, When asked do not proceed to search until you have any one of the features to search for the products, Do not mention i am unable and this information is provided from this website only
-                  
+                6. When user say i have selected a product then ask about Patient First Name, Last Name, Gender , Mobile Number, delivery method: home delivery or office,shipping address.
+                7. When user asks to order products Reply ## { "keywordsArray":[ "firstname","lastname","gender","mobileno","delivery method","shipping address"]} \n
+                
             """}
-            Instruction2 = {"role":"system","content":"""
-            !IMPORTANT :1. Product is selected ask now patient information.
-                           """}
-           
-
-            if productSelect:
-                conversation = [Instruction2]+prompt
-            else:
-                conversation = [Instruction]+prompt
-
+      
+            conversation = [Instruction]+prompt
+       
             response = openai.ChatCompletion.create(
                 model="gpt-4",  # Use the "gpt-3.5-turbo" model
                 messages=conversation,
@@ -82,18 +82,32 @@ class StreamGeneratorView(View):
 
             JsonDataString = ""
             WriteJsonConfig = False
+            WriteJsonOrder = False 
 
             for chunk in response:
                 chunk_message = chunk['choices'][0]['delta']
                 word = chunk_message.get("content", '')
+                print("word",word)
                 if "$$" in word:
                     WriteJsonConfig = True
-
+                
+                if "##" in word:
+                    WriteJsonOrder = True
+                    
                 if WriteJsonConfig:
                     JsonDataString+=word
                     if "}" in word:
                         WriteJsonConfig = False
                         data = self.write(request, JsonDataString)
+                        yield json.dumps({"data":data,"type":"products"})
+                        
+                elif WriteJsonOrder:
+                    JsonDataString+=word
+                    if "}" in word:
+                        WriteJsonOrder = False
+                        print("bxcjbmv")
+                        data = self.order(request, JsonDataString)
+                        print("data",data)
                         yield json.dumps({"data":data,"type":"products"})
                 else:
                     if(word!=''):
@@ -107,17 +121,18 @@ class StreamGeneratorView(View):
     def post(self,request):
       
             data = json.loads(request.body.decode('utf-8'))
-            print("data",data)
+
             #get message from request
             message =  data.get('messages', [])
-            print("message",message)
-            productSelect = data.get('productSelect', False)
-            if productSelect:
-                name = self.gpt3_5(request, [], productSelect)
+     
+            ProductSelected = data.get('ProductSelected', None)
+            print("ProductSelected", ProductSelected)
+            if ProductSelected:
+                name = self.gpt3_5(request, [], ProductSelected)
+                print("result",name)
             else:
                 name = self.gpt3_5(request, message, None)
           
-            #return Response({},status.HTTP_200_OK)
             response =  StreamingHttpResponse(name,status=200, content_type='text/event-stream')
             return response
 
