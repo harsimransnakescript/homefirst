@@ -1328,6 +1328,7 @@ footer .footer_links .site_links a {
   }
   
   .chat-logs {
+    margin-top: 20px;
     padding: 4px 0px 90px 0px;
     height: 449px;
     overflow-y: scroll;
@@ -1523,6 +1524,7 @@ footer .footer_links .site_links a {
     margin: 25px 0 25px 0;
     cursor: pointer;
     padding-left: 20px;
+    margin-left: 50px;
     
   
   }
