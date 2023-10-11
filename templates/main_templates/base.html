@@ -8,6 +8,12 @@
     <title>Home</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel='stylesheet' href="static/css/icon.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+
 </head>
 
 <body>
@@ -39,6 +45,7 @@
                         </li>
                     </ul>
                     <div class="hi_there_btn">
+            
                         <button class="btn" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="29" height="25"
                                 viewBox="0 0 29 25" fill="none">
                                 <path
@@ -144,9 +151,444 @@
                 </div>
             </div>
         </div>
+        <div>
+            <div class="chat-circle-outter" id="chat-circle">
+              <div class="welcome-text">
+                <p class="mb-0">
+                  🙌 Welcome back!<br> How may I help you today?
+                </p>
+          
+              </div>
+            <div  class=" btn-raised chat-circle-image" >
+              <img src="static/images/logo-img.png" class="img-fluid">
+            </div>
+           
+            </div>
+            <div class="chat-box">
+              <div class="chat-box-header">
+                <div class="chat_box_header_logo d-flex align-items-center">
+                  <div class="header_logo">
+                  <a href="" class="">
+                    <img src="static/images/logo-img.png" class="img-fluid">
+                  </a>
+                  </div>
+                  <div class="header_name">
+                    <h1>Homefirst DME</h1>
+                  </div>
+                </div>
+                <div class="header_btn d-flex" style="gap:4px;">
+                  
+                  <span class="chat-box-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <path d="M8.4713 1.07407L0.890182 8.65518" stroke="black" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                      <path d="M0.890182 1.07407L8.47129 8.65518" stroke="black" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div class="chat-box-body">
+                <div class="chat-box-overlay"></div>
+                <div class="days text-center"><span>Today</span></div>
+             
+        
+                <div class="chat-logs">
+                  <div id="cm-msg-2" class="chat-msg user" style="">
+                    <div class="answer">
+                      <div class="cm-msg-text">Hi, it's great to see you! 👋</div>
+                    </div>
+                    
+            
+                  </div>
+        
+                  <!-- homefirst categories start -->
+                <div class="home-first-category-main">
+                  <div class="home-first-category-main-outter">
+                  <div class="category-box">
+                    <div class="category-card">
+                    <div class="category-image">
+                      <img src="static/images/nurse.png" class="img-fluid">
+                      </div>
+                      <div class="category-name">
+                  <p class="mb-0">Nursing Care</p>
+                      </div>
+                      </div>
+                  </div>
+                  <div class="category-box">
+                    <div class="category-card">
+                    <div class="category-image">
+                      <img src="static/images/physical.png" class="img-fluid">
+                      </div>
+                      <div class="category-name">
+                  <p class="mb-0">Physical Therapy</p>
+                      </div>
+                      </div>
+                  </div>
+                  <div class="category-box">
+                    <div class="category-card">
+                    <div class="category-image">
+                      <img src="static/images/home-health.png" class="img-fluid">
+                      </div>
+                      <div class="category-name">
+                  <p class="mb-0">Home Health <br> Aides</p>
+                      </div>
+                  </div>
+                  </div>
+                  <div class="category-box">
+                    <div class="category-card">
+                    <div class="category-image">
+                      <img src="static/images/nurse.png" class="img-fluid">
+                      </div>
+                      <div class="category-name">
+                  <p class="mb-0">Nursing Care</p>
+                      </div>
+                      </div>
+                  </div>
+                  </div>
+                  </div>
+                  {% csrf_token %}
+                  <div class="chat_section">
+                      <div id="display" class="display">
+                        
+                        <fieldset>
+                      
+                          <datalist id="browsers" role="listbox">
+                            {% for question in questions %}
+                            <option value="{{ question }}">{{ question }}</option>
+                            {% endfor %}
+                          </datalist>
+                        </fieldset>
+                      
+                      </div>
+                    </div>
+                 
+        
+                </div>
+        
+        
+                <!--chat-log -->
+              </div>
+              <div class="chat-input">
+                <form>
+                  <input type="text" id="chat-input" placeholder="Type your message here" />
+                  <button type="submit" onclick="send()" class="chat-submit" id="chat-submit">
+                    
+                    <!-- <img src="./images/logo_Sharif.png" class="send_btn"> -->
+                    <div class="send_btn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="21" viewBox="0 0 22 21" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M21.323 0.292921C21.6027 0.564559 21.6974 0.967791 21.5668 1.33038L14.7188 20.3304C14.5794 20.7174 14.2107 20.9825 13.7889 20.9992C13.367 21.0159 12.9774 20.7808 12.8059 20.4062L9.05365 12.2076L0.611114 8.56384C0.225282 8.39731 -0.0167773 8.01894 0.000433928 7.60926C0.0176452 7.19959 0.290639 6.84162 0.689158 6.70617L20.2546 0.0561695C20.628 -0.0707359 21.0432 0.0212832 21.323 0.292921ZM11.062 11.6715L13.633 17.289L18.1322 4.80571L11.062 11.6715ZM16.6759 3.3915L3.8211 7.76063L9.60575 10.2573L16.6759 3.3915Z" fill="white"/>
+                      </svg>
+                    </div>
+                  </button>
+                </form>
+                
+              </div>
+            </div>
+          </div>
     </footer>
     <!-- site footer start end -->
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/script.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+
+<script>
+
+function send() {
+   var csrfToken = "{{ csrf_token }}";
+    var input = document.getElementById("chat-input").value;
+    var display = document.getElementById("display");
+    var send = document.getElementById("send");
+    var url = "/generate-stream"
+    console.log(input);
+
+      function getoldmessages(){
+        const oldmessages = []
+        const Allmessagedivs = display.querySelectorAll("div")
+        for (let i = 0; i < Allmessagedivs.length; i++) {
+          const messagediv = Allmessagedivs[i];
+          if(messagediv.classList.contains("self"))
+          {
+            oldmessages.push({role:"user",content:messagediv.querySelector('.cm-msg-text > h3').innerHTML})
+          }else if(messagediv.classList.contains("user")){
+            oldmessages.push({role:"system",content:messagediv.querySelector('.cm-msg-text').innerHTML})
+          }
+        }
+        return oldmessages
+      }
+
+      
+      
+         
+    let ProductSelected = false; 
+      
+    // Function to handle streaming data from Django backend
+        async function streamDataFromBackend() {
+          try {
+            const response = await fetch(url, {
+              method: 'POST',
+              headers: {
+                "X-CSRFToken": csrfToken,  // Include the CSRF token in the header
+                "Content-Type": "application/json",  // Set the content type accordingly
+            },
+              body:JSON.stringify({
+                "messages":[...getoldmessages(),{role:"user",content:input}],
+                "ProductSelected": ProductSelected
+              })
+            });
+
+
+            // Check if the response status is OK (HTTP status code 200)
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            // Create a ReadableStream from the response
+            const stream = response.body;
+
+            // Define a function to process the streamed data
+            const processData = async (reader,messageelm) => {
+              while (true) {
+                const { done, value } = await reader.read();
+
+                if (done) {
+                  break; // Exit the loop when the stream ends
+                }
+
+                // Process the received data (value) here
+      
+                const textDecoder = new TextDecoder();
+
+                // Decode the byte data to text
+                const decodedText = textDecoder.decode(value);
+                console.log(decodedText)
+                if (isJSON(decodedText)) {
+                  const wordData = JSON.parse(decodedText);
+                  if (isJSON(decodedText)) {
+                    const wordData = JSON.parse(decodedText);
+                    if (wordData.type === 'products') {
+                        const sliderdisplay = document.querySelector('.display');
+                        const ticketSec = document.createElement('div');
+                        ticketSec.classList.add('ticket_sec');
+                  
+                        const ticketOuter = document.createElement('div');
+                        ticketOuter.classList.add('ticket_outer', 'mt-3');
+                        const sliderContainer = document.createElement("div");
+                        sliderContainer.className = "product-slider";
+
+
+                        wordData.data.products.forEach((item) => {
+                            const ticketInnerElem = document.createElement("div");
+                            ticketInnerElem.className = "ticket_inner";
+                
+                            const categoryImageElem = document.createElement("div");
+                            categoryImageElem.className = "category-image";
+                
+                            const imgElem = document.createElement("img");
+                            imgElem.src = item.image;
+                            imgElem.className = "img-fluid";
+                
+                            const productNameElem = document.createElement("div");
+                            productNameElem.className = "product-name";
+                            productNameElem.textContent = item.name;
+                
+                            const viewMoreElem = document.createElement("a");
+                            viewMoreElem.textContent = "Select";
+                            viewMoreElem.className = "view_more text-center";
+
+                            viewMoreElem.addEventListener("click", function() {
+                             
+                              ProductSelected = true;
+                              console.log("=====",ProductSelected)
+                              console.log("Product selected:", item.name);
+                              var fullVariable = "I have selected " + item.name
+                              $("#chat-input").val(fullVariable);
+                              sendRequestWithProductSelected();
+                              $("#chat-submit").click();
+                             
+
+                            });
+                
+                            categoryImageElem.appendChild(imgElem);
+                
+                            ticketInnerElem.appendChild(categoryImageElem);
+                            ticketInnerElem.appendChild(productNameElem);
+                            ticketInnerElem.appendChild(viewMoreElem);
+                
+                            sliderContainer.appendChild(ticketInnerElem);
+              
+                        });
+                        const prevBtn = document.createElement('button');
+                        prevBtn.id = 'prevBtn';
+                        prevBtn.classList.add('previous-btn');
+                        prevBtn.style.display = 'block';
+                        prevBtn.innerHTML = `
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="14" viewBox="0 0 18 14" fill="none">
+                            <path d="M1 7H17" stroke="#6097b4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M7 13L1 7L7 1" stroke="#6097b4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                        `;
+
+                        // Create the next button
+                        const nextBtn = document.createElement('button');
+                        nextBtn.id = 'nextBtn';
+                        nextBtn.classList.add('next-btn');
+                        nextBtn.style.display = 'block';
+                        nextBtn.innerHTML = `
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="14" viewBox="0 0 18 14" fill="none">
+                            <path d="M17 7H1" stroke="#6097b4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M11 13L17 7L11 1" stroke="#6097b4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                        `;
+                        ticketOuter.appendChild(sliderContainer);
+                        ticketSec.appendChild(ticketOuter);
+                        ticketSec.appendChild(prevBtn);
+                        ticketSec.appendChild(nextBtn);
+
+                        sliderdisplay.appendChild(ticketSec);
+                
+                    
+                        $('.product-slider').slick({
+                          
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                        });
+                  
+
+                        $('#prevBtn').on('click', function() {
+                            $('.product-slider').slick('slickPrev');
+                        });
+
+                        $('#nextBtn').on('click', function() {
+                            $('.product-slider').slick('slickNext');
+                        });
+                    }
+
+                }
+                
+                }else{
+                  messageelm.append(decodedText);
+                }
+                $(".chat-logs")
+                .stop()
+                .animate({ scrollTop: $(".chat-logs")[0].scrollHeight }, 1000);
+
+              }
+            };
+            // Start processing the streamed data
+            const reader = stream.getReader();
+
+
+            const elm = document.createElement("div");
+            elm.id = "cm-msg-2";
+            elm.className = "chat-msg user";
+
+            const answerDiv = document.createElement("div");
+            answerDiv.className = "answer";
+
+            const cmMsgTextDiv = document.createElement("div");
+            cmMsgTextDiv.className = "cm-msg-text";
+
+            answerDiv.appendChild(cmMsgTextDiv);
+            elm.appendChild(answerDiv);
+
+            result=display.appendChild(elm);
+            console.log("---",result)
+            await processData(reader,cmMsgTextDiv);
+          
+
+          } catch (error) {
+            console.error('An error occurred:', error);
+          }
+        }
+
+
+   
+      async function sendRequestWithProductSelected() {
+        try {
+          
+          await new Promise((resolve) => setTimeout(resolve, 100));
+      
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              "X-CSRFToken": csrfToken,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              "messages": [...getoldmessages(), { role: "user", content: input }],
+              "ProductSelected": ProductSelected
+            })
+          });
+      
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+      
+          const stream = response.body;
+      
+      
+          const processData = async (reader, messageelm) => {
+            while (true) {
+              const { done, value } = await reader.read();
+      
+              if (done) {
+                break;
+              }
+      
+
+              const textDecoder = new TextDecoder();
+      
+
+              const decodedText = textDecoder.decode(value);
+              console.log(decodedText);
+      
+         
+            }
+          };
+      
+          const reader = stream.getReader();
+      
+  
+        } catch (error) {
+          console.error('An error occurred:', error);
+        }
+    }
+    
+    
+
+    // Call the function to start streaming data
+    streamDataFromBackend();
+
+    //set the user input to the chatbox
+    display.innerHTML=display.innerHTML+"<div class='chat-msg self'> <div class='cm-msg-text'><h3>"+input+"</h3></div></div>";
+
+    document.getElementById("chat-input").value="";
+
+   
+    }
+
+    
+
+    function isJSON(str) {
+      try {
+        JSON.parse(str);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+   
+</script>
+    
+    
+    
 </body>
+
 
 </html>

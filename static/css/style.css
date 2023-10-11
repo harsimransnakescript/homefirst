@@ -1328,6 +1328,7 @@ footer .footer_links .site_links a {
   }
   
   .chat-logs {
+    margin-top: 20px;
     padding: 4px 0px 90px 0px;
     height: 449px;
     overflow-y: scroll;
@@ -1523,6 +1524,7 @@ footer .footer_links .site_links a {
     margin: 25px 0 25px 0;
     cursor: pointer;
     padding-left: 20px;
+    margin-left: 50px;
     
   
   }
@@ -1735,4 +1737,32 @@ footer .footer_links .site_links a {
     #chat-input {
       width: -webkit-fill-available;
     }
+  }
+
+
+  .img-fluid {
+    max-width: 100%; /* Ensure the image doesn't exceed its container */
+    height: auto; /* Maintain the image's aspect ratio */
+  }
+
+
+  .product-name {
+    font-size: 16px; /* Adjust the font size as needed */
+    font-weight: bold; /* Make the text bold if desired */
+    margin-bottom: 10px; /* Add some spacing below the product name */
+  }
+
+
+  .view_more {
+    background-color: #007bff; /* Change the background color as needed */
+    color: #fff; /* Text color */
+    padding: 8px 16px; /* Add padding for better appearance */
+    text-decoration: none; /* Remove underline from the anchor tag */
+    border-radius: 4px; /* Add rounded corners if desired */
+    display: block; /* Make it a block element for padding */
+  }
+
+
+  .text-center {
+    text-align: center; /* Center-align the content */
   }
