@@ -3,13 +3,17 @@ from .models import *
 from django.contrib.auth.decorators import login_required
 import csv
 import pandas as pd
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.db.models import OuterRef, Subquery
+from django.forms.models import model_to_dict
 import os
 import openpyxl
 from openpyxl_image_loader import SheetImageLoader
+from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 import requests
 from dotenv import load_dotenv
+from django.utils import timezone
 import os
 load_dotenv()
 
@@ -211,3 +215,56 @@ def create_authorization_status(request):
         response = requests.post(url, json=payload, headers=headers)
     
     return render(request, 'main_templates/authorization_status.html', {'authorization_statuses': authorization_statuses})
+
+@csrf_exempt
+def form_view(request):
+    if request.method == 'POST':
+        user = request.user
+        category = request.POST.get('title')
+        subject = request.POST.get('description')
+        image = request.FILES.get('image')
+        img  =  image if image else ''
+        if category and subject:
+            new_form = FormModel(user=user, category=category, subject=subject, image=img)
+            new_form.save()
+            return redirect('form')
+    return render(request, 'form.html')
+
+def ticket_form(request):
+    forms = FormModel.objects.filter(user=request.user)
+    return render(request, 'ticket-history.html', {'form_list': forms})
+
+
+@csrf_exempt
+def ticket_solved(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        form_instance = FormModel.objects.get(id=id)
+        form_instance.is_solved = True    
+        form_instance.updated_on = timezone.now()
+        form_instance.save() 
+        return JsonResponse({'message': f'Your {form_instance.category} case has been solved'})
+
+@csrf_exempt
+def ticket_details(request):
+    if request.method == 'POST':
+        comment = request.POST.get('comment')
+        id = request.POST.get('id')
+        form_instance = FormModel.objects.get(id=id)
+        comment_obj = TicketComment.objects.create(comment=comment, ticket=form_instance, user=request.user)
+        response = {
+            'id':id,
+            "first_name": comment_obj.user.first_name,
+            "comment": comment_obj.comment
+        }
+        form_instance.updated_on = timezone.now()
+        form_instance.save() 
+        return JsonResponse({'comments': response})
+    else:
+        id = request.GET.get('id')
+    forms = FormModel.objects.get(user=request.user, id=id)
+    image_name = str(forms.image).split('/')[1]
+    image = image_name.split('.')[0]
+    comments = TicketComment.objects.filter(user=request.user, ticket=id)
+    return render(request, 'ticket-detail.html', {'form_list': forms, "image":image, "comments": comments})
+

@@ -1,0 +1,134 @@
+<html>
+   <head>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+  
+/* Remove for prod */
+.rtl-slider-flex {
+  width: 50%;
+  margin: 10em auto;
+  padding: 0.75em 0.75em 0.5em;
+  background: #fff;
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+  box-shadow: 0 1px 5px rgba(0,0,0,0.15);
+}
+.thumb-prev,
+.thumb-next {
+  bottom: 12px !important;
+  right: calc(9% + 0.75em) !important;
+}
+.thumb-prev {
+  right: calc(0% + 0.75em) !important;
+}
+/* Necessary styles */
+.rtl-slider-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  box-sizing: border-box;
+  position: relative;
+}
+.rtl-slider-flex .rtl-slider {
+  width: 80%;
+  margin-right: 1%;
+}
+.rtl-slider-flex .rtl-slider-nav {
+  width: 19%;
+  margin-top: -2px;
+}
+.rtl-slider-flex .rtl-slider-nav .rtl-slider-slide {
+  padding-top: 90%;
+  margin-bottom: 4px;
+  opacity: 0.75;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.rtl-slider-flex .rtl-slider-nav .slick-slide.slick-current.slick-active .rtl-slider-slide {
+  opacity: 1;
+}
+.rtl-slider-flex .rtl-slider-slide {
+  background: #0b69b7 url("") no-repeat center/cover;
+  padding-top: 56.25%;
+}
+.rtl-slider-flex .thumb-prev,
+.rtl-slider-flex .thumb-next {
+  position: absolute;
+  bottom: 4px;
+  right: 0;
+  height: 88px;
+  width: 9.5%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+.rtl-slider-flex .thumb-prev {
+  right: 9.5%;
+}
+
+    </style>
+   </head>
+<body class="page">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 m-auto">
+        <div>
+    <div class="rtl-slider-flex">
+      <div class="rtl-slider">
+        <div class="rtl-slider-slide" style="background-image: url('https://images.pexels.com/photos/91216/pexels-photo-91216.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');">
+        </div>
+        <div class="rtl-slider-slide" style="background-image: url('https://images.pexels.com/photos/375732/pexels-photo-375732.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');">
+        </div>
+        <div class="rtl-slider-slide" style="background-image: url('https://images.pexels.com/photos/40023/aurora-northern-lights-aurora-borealis-borealis-40023.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');">
+        </div>
+      </div>
+      <div class="rtl-slider-nav">
+        <div class="rtl-slider-slide" style="background-image: url('https://images.pexels.com/photos/91216/pexels-photo-91216.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');">
+        </div>
+        <div class="rtl-slider-slide" style="background-image: url('https://images.pexels.com/photos/375732/pexels-photo-375732.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');">
+        </div>
+        <div class="rtl-slider-slide" style="background-image: url('https://images.pexels.com/photos/40023/aurora-northern-lights-aurora-borealis-borealis-40023.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');">
+        </div>
+      </div>
+      <span class="thumb-prev"><i class="fa fa-angle-up fa-lg"></i></span>
+      <span class="thumb-next"><i class="fa fa-angle-down fa-lg"></i><span>
+    </div>
+    </div>
+    <div>
+      adadasdsa
+      </div>
+
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+
+  <script>
+   $(document).ready(function(){
+	$('.rtl-slider').slick({
+	  slidesToShow: 1,
+	  slidesToScroll: 1,
+	  arrows: false,
+	  fade: true,
+	  asNavFor: '.rtl-slider-nav'
+	});
+	$('.rtl-slider-nav').slick({
+		slidesToShow: 2,
+		slidesToScroll: 1,
+		vertical: true,
+	   asNavFor: '.rtl-slider',
+	   centerMode: false,
+	   focusOnSelect: true,
+		prevArrow: ".thumb-prev",
+   	nextArrow: ".thumb-next",
+	});
+});
+
+ 
+  </script>
+</body>
+</html>

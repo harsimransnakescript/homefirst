@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <!-- header sec start -->
+    <header class="site_header">
+        <div class="container-md">
+            <div class="nav d-flex justify-content-between">
+                <div class="logo">
+                    <a href="#" class="nav-brand">
+                        <img src="./images/header-logo.png"> </a>
+                </div>
+                <div class="nav-btn py-3">
+                    <a href="login.html" class="mx-2">Login</a>
+                    <a href="signUP.html" class="signup-btn">Sign Up</a>
+                </div>
+            </div>
+    </header>
+    <!-- header sec end -->
+    <!-- choose Your role sec start -->
+    <section class="choose_role signUp_sec">
+        <div class="container-md">
+            <div class="choose_role_inner signUp_now">
+                <div class="overlay"></div>
+                <form class="signup_form_outer">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-8 p-0">
+                            <div class="choose-your-role sign-up">
+                                <h1>Sign up now</h1>
+                                <p>Create Your case manager Account Here</p>
+                                <div class="signUp_form">
+                                    <div class="input-field form-floating mb-3">
+                                        <input type="text" class="form-control" id="floatingInput"
+                                            placeholder="username" required="">
+                                        <label for="floatingInput">username</label>
+                                    </div>
+                                    <div class="input-field form-floating mb-3">
+                                        <input type="email" class="form-control" id="floatingInput"
+                                            placeholder="name@example.com" required="">
+                                        <label for="floatingInput">Email/phone number</label>
+                                    </div>
+                                    <div class="input-field form-floating mb-3">
+                                        <input type="password" class="form-control" id="floatingPassword"
+                                            placeholder="Password" required="">
+                                        <label for="floatingPassword">Password</label>
+                                        <div class="show_password_icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20"
+                                                viewBox="0 0 21 20" fill="none">
+                                                <path
+                                                    d="M18.7513 20L15.2494 16.3488C13.7386 17.066 12.0947 17.4274 10.4348 17.4074C8.72335 17.4296 7.02961 17.0445 5.48243 16.2813C4.28314 15.6713 3.20623 14.8287 2.30922 13.7986C1.35703 12.7344 0.608658 11.4903 0.104348 10.1333L0 9.79166L0.109565 9.44786C0.863802 7.44198 2.13314 5.69131 3.77843 4.38775L1.04348 1.5362L2.51791 0L20.2247 18.4616L18.7534 20H18.7513ZM5.25496 5.9283C3.92131 6.90303 2.86816 8.23882 2.20904 9.79166C3.62235 13.1914 6.88265 15.3475 10.4348 15.2315C11.5303 15.2408 12.6194 15.0569 13.656 14.6875L11.7777 12.7292C11.3597 12.9428 10.9004 13.0544 10.4348 13.0555C8.71039 13.0443 7.31517 11.5896 7.30435 9.79166C7.30485 9.30508 7.41192 8.82506 7.61739 8.38819L5.25496 5.9283ZM18.6282 13.7192L17.1757 12.2058C17.7867 11.4855 18.2876 10.6712 18.6605 9.79166C17.2491 6.39023 13.9876 4.23335 10.4348 4.35185C10.177 4.35185 9.91826 4.36164 9.66783 4.38013L7.82609 2.45771C8.68344 2.26648 9.55804 2.17201 10.4348 2.17592C12.1462 2.15378 13.8399 2.53889 15.3871 3.30196C16.5864 3.91202 17.6634 4.7546 18.5603 5.78469C19.5121 6.84759 20.2604 8.09017 20.7652 9.44568L20.8696 9.79166L20.76 10.1355C20.2715 11.4607 19.5487 12.6785 18.6292 13.7257L18.6282 13.7192Z"
+                                                    fill="#DEDEDE" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="input-field form-floating mb-3">
+                                        <input type="password" class="form-control" id="floatingPassword"
+                                            placeholder="Password" required="">
+                                        <label for="floatingPassword">confirm passsowrd</label>
+                                        <div class="show_password_icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20"
+                                                viewBox="0 0 21 20" fill="none">
+                                                <path
+                                                    d="M18.7513 20L15.2494 16.3488C13.7386 17.066 12.0947 17.4274 10.4348 17.4074C8.72335 17.4296 7.02961 17.0445 5.48243 16.2813C4.28314 15.6713 3.20623 14.8287 2.30922 13.7986C1.35703 12.7344 0.608658 11.4903 0.104348 10.1333L0 9.79166L0.109565 9.44786C0.863802 7.44198 2.13314 5.69131 3.77843 4.38775L1.04348 1.5362L2.51791 0L20.2247 18.4616L18.7534 20H18.7513ZM5.25496 5.9283C3.92131 6.90303 2.86816 8.23882 2.20904 9.79166C3.62235 13.1914 6.88265 15.3475 10.4348 15.2315C11.5303 15.2408 12.6194 15.0569 13.656 14.6875L11.7777 12.7292C11.3597 12.9428 10.9004 13.0544 10.4348 13.0555C8.71039 13.0443 7.31517 11.5896 7.30435 9.79166C7.30485 9.30508 7.41192 8.82506 7.61739 8.38819L5.25496 5.9283ZM18.6282 13.7192L17.1757 12.2058C17.7867 11.4855 18.2876 10.6712 18.6605 9.79166C17.2491 6.39023 13.9876 4.23335 10.4348 4.35185C10.177 4.35185 9.91826 4.36164 9.66783 4.38013L7.82609 2.45771C8.68344 2.26648 9.55804 2.17201 10.4348 2.17592C12.1462 2.15378 13.8399 2.53889 15.3871 3.30196C16.5864 3.91202 17.6634 4.7546 18.5603 5.78469C19.5121 6.84759 20.2604 8.09017 20.7652 9.44568L20.8696 9.79166L20.76 10.1355C20.2715 11.4607 19.5487 12.6785 18.6292 13.7257L18.6282 13.7192Z"
+                                                    fill="#DEDEDE" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="continue-btn sign_up_btn">
+                                        <button class="btn" type="submit">sign Up</button>
+                                    </div>
+                                    <div class="already_have_acc">
+                                        <p>Already Have an Account? <a href="login.html">Log In</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- choose Your role sec end -->
+
+    <!-- site footer start here -->
+    <footer>
+        <div class="container-md">
+            <div class="footer-top">
+                <div class="row">
+                    <div class="col-lg-6 mb-3">
+                        <div class="footer_left">
+                            <div class="site-logo">
+                                <a href=""><img src="./images/header-logo.png"></a>
+                            </div>
+                            <p>Lorem ipsum, or lipsum as it is sometimes.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3  mb-3">
+                        <div class="footer_links">
+                            <h2 class="footer-heading">links</h2>
+                            <div class="site_links">
+                                <a href="">privacy policy</a>
+                                <a href="">FAQs</a>
+                                <a href="">terms of service</a>
+                                <a href="">contact us</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 d-md-flex justify-content-end  mb-3">
+                        <div class="footer_social_links">
+                            <h2 class="footer-heading">Social links</h2>
+                            <div class="footer_icons">
+                                <div class="social_icon facebook-icon">
+                                    <a href="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                            viewBox="0 0 35 35" fill="none">
+                                            <circle cx="17.0056" cy="17.0056" r="16.5054" stroke="#656263"
+                                                stroke-width="1.00033" />
+                                            <path
+                                                d="M19.961 17.8559L20.3137 15.3938H18.1082V13.7961C18.1082 13.1225 18.4163 12.4659 19.4041 12.4659H20.4067V10.3697C20.4067 10.3697 19.4969 10.2034 18.6269 10.2034C16.8106 10.2034 15.6234 11.3826 15.6234 13.5173V15.3938H13.6045V17.8559H15.6234V23.8079H18.1082V17.8559H19.961Z"
+                                                fill="#656263" />
+                                        </svg>
+                                    </a>
+                                </div>
+                                <div class="social_icon instagram-icon">
+                                    <a href="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                            viewBox="0 0 35 35" fill="none">
+                                            <circle cx="17.0212" cy="17.0056" r="16.5054" stroke="#656263"
+                                                stroke-width="1.00033" />
+                                            <path
+                                                d="M17.0235 13.5171C15.0932 13.5171 13.5362 15.0744 13.5362 17.0051C13.5362 18.9358 15.0932 20.4931 17.0235 20.4931C18.9538 20.4931 20.5107 18.9358 20.5107 17.0051C20.5107 15.0744 18.9538 13.5171 17.0235 13.5171ZM17.0235 19.2728C15.7761 19.2728 14.7563 18.2558 14.7563 17.0051C14.7563 15.7544 15.7731 14.7375 17.0235 14.7375C18.2739 14.7375 19.2906 15.7544 19.2906 17.0051C19.2906 18.2558 18.2709 19.2728 17.0235 19.2728ZM21.4668 13.3744C21.4668 13.8267 21.1026 14.188 20.6534 14.188C20.2012 14.188 19.84 13.8237 19.84 13.3744C19.84 12.9251 20.2042 12.5609 20.6534 12.5609C21.1026 12.5609 21.4668 12.9251 21.4668 13.3744ZM23.7764 14.2001C23.7248 13.1103 23.4759 12.145 22.6777 11.3496C21.8826 10.5543 20.9174 10.3053 19.8278 10.2507C18.7049 10.1869 15.3391 10.1869 14.2161 10.2507C13.1296 10.3023 12.1644 10.5512 11.3662 11.3466C10.568 12.1419 10.3222 13.1073 10.2675 14.1971C10.2038 15.3203 10.2038 18.6869 10.2675 19.8101C10.3191 20.8999 10.568 21.8653 11.3662 22.6606C12.1644 23.456 13.1265 23.7049 14.2161 23.7596C15.3391 23.8233 18.7049 23.8233 19.8278 23.7596C20.9174 23.708 21.8826 23.459 22.6777 22.6606C23.4729 21.8653 23.7218 20.8999 23.7764 19.8101C23.8401 18.6869 23.8401 15.3233 23.7764 14.2001ZM22.3257 21.0153C22.0889 21.6103 21.6307 22.0687 21.0328 22.3085C20.1374 22.6637 18.0129 22.5817 17.0235 22.5817C16.0341 22.5817 13.9065 22.6606 13.0142 22.3085C12.4194 22.0717 11.9611 21.6133 11.7213 21.0153C11.3662 20.1198 11.4482 17.9948 11.4482 17.0051C11.4482 16.0155 11.3692 13.8875 11.7213 12.995C11.958 12.4 12.4163 11.9416 13.0142 11.7018C13.9096 11.3466 16.0341 11.4285 17.0235 11.4285C18.0129 11.4285 20.1405 11.3496 21.0328 11.7018C21.6276 11.9385 22.0859 12.3969 22.3257 12.995C22.6808 13.8905 22.5988 16.0155 22.5988 17.0051C22.5988 17.9948 22.6808 20.1228 22.3257 21.0153Z"
+                                                fill="#656263" />
+                                        </svg>
+                                    </a>
+                                </div>
+                                <div class="social_icon twitter-icon">
+                                    <a href="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                            viewBox="0 0 35 35" fill="none">
+                                            <circle cx="17.0369" cy="17.0056" r="16.5054" stroke="#656263"
+                                                stroke-width="1.00033" />
+                                            <path
+                                                d="M24.6395 13.5934C24.6502 13.7422 24.6502 13.891 24.6502 14.0398C24.6502 18.5781 21.1434 23.8074 14.7339 23.8074C12.7592 23.8074 10.9249 23.244 9.38184 22.2663C9.6624 22.2981 9.93213 22.3088 10.2235 22.3088C11.8528 22.3088 13.3527 21.7667 14.5504 20.842C13.0182 20.8101 11.7341 19.8217 11.2917 18.4612C11.5075 18.4931 11.7233 18.5144 11.95 18.5144C12.2629 18.5144 12.5758 18.4718 12.8671 18.3975C11.2702 18.0786 10.0724 16.6969 10.0724 15.0282V14.9857C10.5364 15.2408 11.0759 15.4002 11.6478 15.4215C10.709 14.805 10.094 13.7528 10.094 12.5624C10.094 11.9247 10.2666 11.3401 10.5687 10.8299C12.2844 12.9131 14.8633 14.2736 17.7551 14.4224C17.7012 14.1673 17.6688 13.9016 17.6688 13.6359C17.6688 11.744 19.2226 10.2029 21.1541 10.2029C22.1576 10.2029 23.064 10.6174 23.7007 11.287C24.4883 11.1382 25.2437 10.8512 25.9127 10.458C25.6537 11.2551 25.1034 11.9247 24.3804 12.3498C25.0818 12.2755 25.7616 12.0841 26.3874 11.8184C25.9128 12.4986 25.3192 13.1044 24.6395 13.5934Z"
+                                                fill="#656263" />
+                                        </svg>
+                                    </a>
+                                </div>
+                                <div class="social_icon google-icon">
+                                    <a href="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                            viewBox="0 0 35 35" fill="none">
+                                            <circle cx="17.0535" cy="17.0056" r="16.5054" stroke="#656263"
+                                                stroke-width="1.00033" />
+                                            <path
+                                                d="M20.2793 16.0307C20.3453 16.3741 20.3924 16.7174 20.3924 17.1629C20.3924 21.0512 17.7439 23.8074 13.7572 23.8074C9.94006 23.8074 6.84863 20.7635 6.84863 17.0051C6.84863 13.2467 9.94006 10.2029 13.7572 10.2029C15.6233 10.2029 17.1784 10.871 18.3848 11.9846L16.5092 13.7571C16.0003 13.2746 15.1049 12.7085 13.7572 12.7085C11.4009 12.7085 9.47819 14.6294 9.47819 17.0051C9.47819 19.3808 11.4009 21.3018 13.7572 21.3018C16.4904 21.3018 17.5177 19.3622 17.6779 18.3693H13.7572V16.0307H20.2793V16.0307ZM26.9505 16.2588V14.2842H24.9355V16.2588H22.9301V18.2428H24.9355V20.2173H26.9505V18.2428H28.9559V16.2588H26.9505Z"
+                                                fill="#656263" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer_copyright text-center">
+                    <p>©Copyright © 2019 - HOMEFIRST DME. ALL RIGHTS RESERVED.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- site footer start end -->
+</body>
+
+</html>
